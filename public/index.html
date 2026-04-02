@@ -147,6 +147,11 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div class="f"><label>상호명 <span class="req">*</span></label><input type="text" id="bizName" placeholder="예) 홍길동 카페"><div class="emsg" id="e-bizName">상호명을 입력해 주세요</div></div>
       <div class="f"><label>대표자 성함 <span class="req">*</span></label><input type="text" id="repName" placeholder="예) 홍길동"><div class="emsg" id="e-repName">성함을 입력해 주세요</div></div>
     </div>
+    <div class="f" id="f-repbirth" style="display:none">
+      <label>대표자 생년월일</label>
+      <input type="text" id="repBirth" placeholder="예) 19751020 (8자리)" maxlength="8">
+      <div class="hint">※ 건강보험 EDI, 국민연금 EDI 서류에 사용됩니다</div>
+    </div>
     <div class="f"><label>사업자등록번호 <span class="req">*</span></label><input type="text" id="bizNum" placeholder="000-00-00000" maxlength="12" oninput="fmtBiz(this)"><div class="emsg" id="e-bizNum">사업자번호를 입력해 주세요</div></div>
     <div class="row2">
       <div class="f"><label>연락처 <span class="req">*</span></label><input type="tel" id="phone" placeholder="010-0000-0000" oninput="fmtPhone(this)"><div class="emsg" id="e-phone">연락처를 입력해 주세요</div></div>
@@ -283,7 +288,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 
 <script>
 const D={};let btype='';
-function selType(t){btype=t;document.getElementById('bp').className='tbtn'+(t==='personal'?' sp':'');document.getElementById('bc').className='tbtn'+(t==='corp'?' sc':'');document.getElementById('cs-p').className='cs cs-p'+(t==='personal'?' show':'');document.getElementById('cs-c').className='cs cs-c'+(t==='corp'?' show':'');}
+function selType(t){btype=t;document.getElementById('bp').className='tbtn'+(t==='personal'?' sp':'');document.getElementById('bc').className='tbtn'+(t==='corp'?' sc':'');document.getElementById('cs-p').className='cs cs-p'+(t==='personal'?' show':'');document.getElementById('cs-c').className='cs cs-c'+(t==='corp'?' show':'');document.getElementById('f-repbirth').style.display=t==='personal'?'block':'none';}
 function sr(k,v,el){D[k]=v;el.closest('.rg').querySelectorAll('.ri').forEach(i=>i.classList.remove('ck'));el.classList.add('ck');}
 function tgEmp(s){document.getElementById('cs-e').className='cs cs-e'+(s?' show':'');}
 function fmtBiz(el){let v=el.value.replace(/\D/g,'');if(v.length>3)v=v.substr(0,3)+'-'+v.substr(3);if(v.length>6)v=v.substr(0,6)+'-'+v.substr(6);el.value=v.substr(0,12);}
@@ -305,6 +310,7 @@ async function doSubmit(){
     bizNum:document.getElementById('bizNum').value,phone:document.getElementById('phone').value,
     email:document.getElementById('email').value,address:document.getElementById('addr').value,
     bizType:btype,contract:D.ct||'기장',tax:D.tx||'일반과세',
+    repBirth:document.getElementById('repBirth').value,
     settleMonth:document.getElementById('setMon').value||'12월',capital:document.getElementById('capital').value,
     fee:document.getElementById('fee').value,cmsDay:document.getElementById('cmsDay').value,
     bank:document.getElementById('bank').value,account:document.getElementById('account').value,
