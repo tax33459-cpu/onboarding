@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맞춤 안내문 생성 | 유진영세무회계</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f0; color: #1a1a1a; min-height: 100vh; padding: 2rem 1rem; }
+  .container { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #888; margin-bottom: 24px; }
+  .card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e8; padding: 20px; margin-bottom: 12px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  label { font-size: 13px; color: #666; display: block; margin-bottom: 6px; }
+  select, input[type=date], textarea {
+    width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px;
+    font-size: 14px; background: #fff; color: #1a1a1a; outline: none;
+    transition: border-color 0.15s;
+  }
+  select:focus, input:focus, textarea:focus { border-color: #999; }
+  textarea { resize: vertical; }
+  .mb14 { margin-bottom: 14px; }
+  .btn {
+    width: 100%; padding: 11px; border: none; border-radius: 8px;
+    background: #1a1a1a; color: #fff; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn:hover:not(:disabled) { background: #333; }
+  .btn:disabled { background: #aaa; cursor: not-allowed; }
+  .log-box { background: #f8f8f6; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .log-item { font-size: 13px; color: #666; padding: 3px 0; display: flex; align-items: center; gap: 8px; }
+  .log-ok { color: #2ecc71; }
+  .log-wait { color: #f39c12; }
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  .metric { background: #f8f8f6; border-radius: 8px; padding: 12px 14px; }
+  .metric-label { font-size: 12px; color: #888; margin-bottom: 3px; }
+  .metric-val { font-size: 17px; font-weight: 600; }
+  .err { background: #fff0f0; color: #c0392b; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; font-size: 14px; }
+  .notice-card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e8; padding: 16px 20px; margin-bottom: 10px; }
+  .notice-header { display: flex; align-items: center; justify-content: space-between; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: #e8f0fe; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #185fa5; flex-shrink: 0; }
+  .notice-info { margin-left: 10px; }
+  .notice-name { font-weight: 600; font-size: 15px; }
+  .notice-sub { font-size: 12px; color: #888; margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+  .badge { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+  .badge-email { background: #e8f0fe; color: #185fa5; }
+  .badge-kakao { background: #fef9e7; color: #a05c00; }
+  .actions { display: flex; gap: 8px; }
+  .btn-sm { padding: 5px 14px; border: 1px solid #ddd; border-radius: 7px; background: #fff; font-size: 13px; cursor: pointer; transition: background 0.12s; }
+  .btn-sm:hover { background: #f4f4f0; }
+  .notice-body { margin-top: 14px; background: #f8f8f6; border-radius: 8px; padding: 14px 16px; font-size: 14px; line-height: 1.85; white-space: pre-wrap; color: #1a1a1a; }
+  .left-group { display: flex; align-items: center; }
+  @media (max-width: 500px) { .grid2 { grid-template-columns: 1fr; } .metrics { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📨 맞춤 안내문 생성</h1>
+  <p class="subtitle">거래처별 누적 메모를 AI가 읽고 개인화된 안내문을 자동 생성합니다.</p>
+
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <label>신고 종류</label>
+        <select id="type">
+          <option value="부가가치세">부가가치세</option>
+          <option value="법인세">법인세</option>
+          <option value="종합소득세">종합소득세</option>
+          <option value="원천세">원천세</option>
+          <option value="연말정산">연말정산</option>
+          <option value="면세현황신고">면세현황신고</option>
+          <option value="지급명세서">지급명세서</option>
+        </select>
+      </div>
+      <div>
+        <label>마감일 (선택)</label>
+        <input type="date" id="deadline">
+      </div>
+    </div>
+    <div class="mb14">
+      <label>이번 시즌 추가 안내사항 (선택)</label>
+      <textarea id="extra" rows="2" placeholder="예) 이번 1기부터 전자세금계산서 의무발행 대상 확대 안내 포함"></textarea>
+    </div>
+    <button class="btn" id="genBtn" onclick="generate()">맞춤 안내문 생성하기</button>
+  </div>
+
+  <div id="logBox" class="log-box" style="display:none"></div>
+  <div id="metrics" class="metrics" style="display:none"></div>
+  <div id="errBox" class="err" style="display:none"></div>
+  <div id="noticeList"></div>
+</div>
+
+<script>
+const NOTION_MCP = "https://mcp.notion.com/mcp";
+
+const SYSTEM = `당신은 세무사무소 유진영세무회계의 맞춤 안내문 생성 AI 도우미입니다.
+
+[Notion 거래처 DB]
+data_source_id: 5552e25e-ab87-4c24-9332-1e5a04628480
+스키마: 상호명(title), 구분(법인사업자/개인사업자), 과세유형(일반과세/간이과세/면세), 직원유무(checkbox "__YES__"=true), 유지여부(활성/휴면/폐업/이관), 대표자명(text), 이메일(email), 연락처(phone)
+
+[신고종류별 필터 기준 - 유지여부=활성 기본 적용]
+- 부가가치세: 과세유형이 일반과세 또는 간이과세
+- 법인세: 구분=법인사업자
+- 종합소득세: 구분=개인사업자
+- 원천세: 직원유무=true
+- 연말정산: 직원유무=true
+- 면세현황신고: 과세유형=면세
+- 지급명세서: 직원유무=true
+
+[작업 순서]
+1. notion-query-database-view로 거래처 DB 조회 (data_source_id: 5552e25e-ab87-4c24-9332-1e5a04628480)
+2. 각 거래처 페이지를 notion-fetch로 열어 메모(💰 부가가치세 메모, 🏢 법인세/종합소득세 메모, 👥 원천세/급여 메모, 📝 기타 특이사항) 확인
+3. 메모를 반영한 맞춤 안내문 생성
+
+[안내문 작성 원칙]
+- 세무사 유진영 이름으로 정중하고 친근하게
+- 거래처 메모 특이사항 반드시 반영
+- 필요 자료 목록 포함, 마감일 명시
+- 이메일 있으면 이메일용(400자 내외), 없으면 카카오톡용(200자 이내)
+- 메모 없는 거래처는 기본 안내문 작성
+
+[출력] 아래 JSON만 출력. 다른 텍스트 절대 없이:
+{"신고종류":"...","생성일":"오늘날짜","notices":[{"거래처명":"...","대표자명":"...","이메일":"... or null","발송방식":"이메일 or 카카오톡","안내문":"..."}]}`;
+
+let expandedIdx = null;
+
+async function generate() {
+  const type = document.getElementById('type').value;
+  const deadline = document.getElementById('deadline').value;
+  const extra = document.getElementById('extra').value;
+  const btn = document.getElementById('genBtn');
+
+  btn.disabled = true;
+  btn.textContent = 'AI가 안내문 생성 중...';
+  document.getElementById('logBox').style.display = 'none';
+  document.getElementById('metrics').style.display = 'none';
+  document.getElementById('errBox').style.display = 'none';
+  document.getElementById('noticeList').innerHTML = '';
+  expandedIdx = null;
+
+  showLog(['거래처 DB 조회 시작...'], true);
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 8000,
+        system: SYSTEM,
+        messages: [{
+          role: "user",
+          content: `신고종류: ${type}\n마감일: ${deadline || '법정 마감일 기준'}\n추가 안내사항: ${extra || '없음'}\n\n위 기준으로 모든 해당 거래처의 맞춤 안내문을 생성해주세요.`
+        }],
+        mcp_servers: [{ type: "url", url: NOTION_MCP, name: "notion-mcp" }]
+      })
+    });
+
+    if (!res.ok) throw new Error(`API 오류 ${res.status}`);
+    const data = await res.json();
+
+    const logs = [];
+    let fetchCount = 0, queryDone = false;
+    (data.content || []).forEach(b => {
+      if (b.type === "mcp_tool_use") {
+        if ((b.name?.includes("query") || b.name?.includes("search")) && !queryDone) {
+          logs.push("거래처 DB 목록 조회 완료"); queryDone = true;
+        } else if (b.name?.includes("fetch")) fetchCount++;
+      }
+    });
+    if (fetchCount > 0) logs.push(`거래처 ${fetchCount}개 메모 확인 완료`);
+    logs.push("맞춤 안내문 생성 완료!");
+    showLog(logs.length > 1 ? logs : ["거래처 조회 및 안내문 생성 완료!"], false);
+
+    const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("");
+    const m = text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error("JSON 응답을 찾을 수 없습니다. 거래처 DB에 데이터가 있는지 확인해주세요.");
+    const parsed = JSON.parse(m[0]);
+    const notices = parsed.notices || [];
+
+    if (!notices.length) { showErr("해당 조건의 활성 거래처가 없습니다."); return; }
+
+    showMetrics(parsed.신고종류, notices.length, parsed.생성일);
+    renderNotices(notices);
+    if (notices.length > 0) toggleExpand(0);
+  } catch(e) {
+    showErr("오류: " + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '맞춤 안내문 생성하기';
+  }
+}
+
+function showLog(msgs, loading) {
+  const box = document.getElementById('logBox');
+  box.style.display = 'block';
+  box.innerHTML = msgs.map((m, i) => {
+    const isLast = i === msgs.length - 1;
+    const dot = loading && isLast
+      ? `<span class="log-wait">⏳</span>`
+      : `<span class="log-ok">✓</span>`;
+    return `<div class="log-item">${dot} ${m}</div>`;
+  }).join('');
+}
+
+function showErr(msg) {
+  const b = document.getElementById('errBox');
+  b.style.display = 'block'; b.textContent = msg;
+}
+
+function showMetrics(type, count, date) {
+  const el = document.getElementById('metrics');
+  el.style.display = 'grid';
+  el.innerHTML = [
+    { label: '신고 종류', val: type },
+    { label: '생성된 안내문', val: count + '건' },
+    { label: '생성일', val: date || new Date().toISOString().slice(0,10) }
+  ].map(m => `<div class="metric"><div class="metric-label">${m.label}</div><div class="metric-val">${m.val}</div></div>`).join('');
+}
+
+function renderNotices(notices) {
+  document.getElementById('noticeList').innerHTML = notices.map((n, idx) => {
+    const init = (n.거래처명 || '?').charAt(0);
+    const bCls = n.발송방식 === '이메일' ? 'badge-email' : 'badge-kakao';
+    return `
+    <div class="notice-card" id="nc-${idx}">
+      <div class="notice-header">
+        <div class="left-group">
+          <div class="avatar">${init}</div>
+          <div class="notice-info">
+            <div class="notice-name">${n.거래처명}</div>
+            <div class="notice-sub">
+              ${n.대표자명 || ''}
+              <span class="badge ${bCls}">${n.발송방식}</span>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn-sm" onclick="toggleExpand(${idx})" id="toggle-${idx}">펼치기</button>
+          <button class="btn-sm" id="copy-${idx}" onclick="copyNotice(${idx}, ${JSON.stringify(n.안내문)})">복사</button>
+        </div>
+      </div>
+      <div class="notice-body" id="body-${idx}" style="display:none">${n.안내문}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleExpand(idx) {
+  const body = document.getElementById('body-' + idx);
+  const btn = document.getElementById('toggle-' + idx);
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? '펼치기' : '접기';
+}
+
+function copyNotice(idx, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-' + idx);
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = '복사', 2000);
+  });
+}
+</script>
+</body>
+</html>
