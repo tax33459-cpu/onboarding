@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서류 생성 | 유진영 세무회계</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F1EB;--card:#FFF;--primary:#1A2744;--accent:#C8A96E;--text:#1C1C1E;--muted:#7A7A8A;--border:#E2DDD5;--r:#DC2626;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);min-height:100vh;padding:40px 20px 80px;color:var(--text);}
+.wrap{max-width:660px;margin:0 auto;}
+.hdr{text-align:center;margin-bottom:36px;}
+.hdr-top{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;}
+.hdr-line{flex:1;max-width:60px;height:1px;background:linear-gradient(to right,transparent,var(--accent));}
+.hdr-line.r{background:linear-gradient(to left,transparent,var(--accent));}
+.hdr-office{font-family:'Noto Serif KR',serif;font-size:11px;letter-spacing:4px;color:var(--accent);font-weight:600;}
+.hdr h1{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:700;color:var(--primary);letter-spacing:-0.5px;}
+.hdr-sub-line{display:flex;align-items:center;gap:10px;justify-content:center;margin:12px 0;}
+.hdr-sub-line::before,.hdr-sub-line::after{content:'';width:24px;height:1px;background:var(--border);}
+.hdr-sub-line span{font-size:10px;letter-spacing:2px;color:var(--muted);}
+.hdr p{color:var(--muted);font-size:12.5px;line-height:1.8;}
+.badge{display:inline-block;background:#EFF6FF;border:1px solid #DBEAFE;color:#1D4ED8;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;margin-top:10px;}
+
+.card{background:var(--card);border-radius:16px;padding:36px;box-shadow:0 2px 20px rgba(0,0,0,.07);margin-top:16px;}
+@media(max-width:520px){.card{padding:24px;}}
+
+.sec{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--primary);margin:28px 0 16px;display:flex;align-items:center;gap:8px;}
+.sec:first-child{margin-top:0;}
+.sec-line{flex:1;height:1px;background:var(--border);}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:520px){.row2{grid-template-columns:1fr;}}
+.f{margin-bottom:16px;}
+label{display:block;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;margin-bottom:7px;}
+.req{color:var(--accent);margin-left:2px;}
+.opt{color:var(--muted);font-size:9px;margin-left:4px;font-weight:400;letter-spacing:0;}
+input,select{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:all .2s;-webkit-appearance:none;appearance:none;}
+input:focus,select:focus{border-color:var(--primary);background:white;box-shadow:0 0 0 3px rgba(26,39,68,.07);}
+input.er{border-color:var(--r);}
+.emsg{color:var(--r);font-size:10px;margin-top:4px;display:none;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A7A8A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+
+.ttgl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.tbtn{padding:16px;border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:center;transition:all .2s;user-select:none;background:white;}
+.tbtn:hover{border-color:var(--primary);}
+.tbtn.sp{border-color:#2563EB;background:#EFF6FF;}
+.tbtn.sc{border-color:#7C3AED;background:#F5F3FF;}
+.tico{font-size:22px;margin-bottom:6px;}
+.tnm{font-size:14px;font-weight:700;color:var(--primary);}
+.tbtn.sp .tnm{color:#2563EB;}
+.tbtn.sc .tnm{color:#7C3AED;}
+
+.rg{display:flex;gap:8px;flex-wrap:wrap;}
+.ri{display:flex;align-items:center;gap:7px;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;transition:all .18s;user-select:none;}
+.ri:hover{border-color:var(--primary);}
+.ri.ck{border-color:var(--primary);background:#EEF1F8;}
+.rdot{width:15px;height:15px;border-radius:50%;border:2px solid var(--border);transition:all .18s;flex-shrink:0;}
+.ri.ck .rdot{border-color:var(--primary);background:var(--primary);box-shadow:inset 0 0 0 3px white;}
+
+.cs{border-radius:10px;padding:16px;margin-top:10px;display:none;}
+.cs.show{display:block;}
+.cs-e{background:#F0FDF4;border:1.5px solid #BBF7D0;}
+
+.brow{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:32px;flex-wrap:wrap;}
+.brow-right{display:flex;gap:10px;}
+.btn{padding:13px 28px;border-radius:9px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
+.bbk{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
+.bbk:hover{background:var(--bg);}
+.bsb{background:var(--accent);color:var(--primary);font-weight:700;font-size:15px;padding:14px 36px;}
+.bsb:hover{background:#B8953A;transform:translateY(-1px);}
+.errbox{background:#FEF2F2;border:1px solid #FECACA;border-radius:9px;padding:14px;font-size:12px;color:#991B1B;margin-top:16px;display:none;}
+
+@keyframes fup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="hdr-line"></div>
+      <div class="hdr-office">YU JIN YOUNG TAX OFFICE</div>
+      <div class="hdr-line r"></div>
+    </div>
+    <h1>서류 생성</h1>
+    <div class="hdr-sub-line"><span>DOCUMENT GENERATOR</span></div>
+    <p>기존 거래처 서류가 필요할 때 사용하세요.<br>입력 정보는 저장되지 않으며 서류 생성에만 사용됩니다.</p>
+    <div class="badge">📄 거래처 DB 등록 없이 서류만 생성</div>
+  </div>
+
+  <div class="card">
+
+    <!-- 사업자 구분 -->
+    <div class="sec">기본 정보 <div class="sec-line"></div></div>
+    <div class="ttgl">
+      <div class="tbtn" id="bp" onclick="selType('personal')">
+        <div class="tico">👤</div><div class="tnm">개인사업자</div>
+      </div>
+      <div class="tbtn" id="bc" onclick="selType('corp')">
+        <div class="tico">🏢</div><div class="tnm">법인사업자</div>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="f">
+        <label>상호명 <span class="req">★</span></label>
+        <input type="text" id="bizName" placeholder="예) 홍길동 카페">
+        <div class="emsg" id="e-bizName">상호명을 입력해 주세요</div>
+      </div>
+      <div class="f">
+        <label>대표자 성함 <span class="req">★</span></label>
+        <input type="text" id="repName" placeholder="예) 홍길동">
+        <div class="emsg" id="e-repName">성함을 입력해 주세요</div>
+      </div>
+    </div>
+    <div class="f">
+      <label>사업자등록번호 <span class="opt">(선택)</span></label>
+      <input type="text" id="bizNum" placeholder="000-00-00000" maxlength="12" oninput="fmtBiz(this)">
+    </div>
+    <div class="row2">
+      <div class="f">
+        <label>연락처 <span class="opt">(선택)</span></label>
+        <input type="tel" id="phone" placeholder="010-0000-0000" oninput="fmtPhone(this)">
+      </div>
+      <div class="f">
+        <label>사업장 주소 <span class="opt">(선택)</span></label>
+        <input type="text" id="addr" placeholder="예) 서울시 강남구 …">
+      </div>
+    </div>
+    <div class="f" id="f-repbirth">
+      <label>대표자 생년월일 <span class="opt">(선택 · 4대보험 서류용)</span></label>
+      <input type="text" id="repBirth" placeholder="예) 19751020 (8자리)" maxlength="8">
+    </div>
+
+    <!-- CMS & 기장료 -->
+    <div class="sec">CMS & 기장료 <div class="sec-line"></div></div>
+    <div class="row2">
+      <div class="f">
+        <label>월 기장료 <span class="opt">(선택)</span></label>
+        <input type="text" id="fee" placeholder="예) 150000" oninput="fmtNum(this)">
+      </div>
+      <div class="f">
+        <label>CMS 출금일 <span class="opt">(선택)</span></label>
+        <select id="cmsDay">
+          <option value="">선택</option>
+          <option value="5">5일</option>
+          <option value="10">10일</option>
+          <option value="15">15일</option>
+          <option value="20">20일</option>
+          <option value="25">25일</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="f">
+        <label>은행명 <span class="opt">(선택)</span></label>
+        <input type="text" id="bank" placeholder="예) 신한은행">
+      </div>
+      <div class="f">
+        <label>계좌번호 <span class="opt">(선택)</span></label>
+        <input type="text" id="account" placeholder="000-000-000000">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="f">
+        <label>예금주 <span class="opt">(선택)</span></label>
+        <input type="text" id="accountName" placeholder="예금주명">
+      </div>
+      <div class="f">
+        <label>생년월일/사업자번호 <span class="opt">(CMS용)</span></label>
+        <input type="text" id="birthOrBizNum" placeholder="개인: 생년월일 6자리 / 법인: 사업자번호">
+      </div>
+    </div>
+
+    <!-- 직원 현황 -->
+    <div class="sec">직원 현황 <div class="sec-line"></div></div>
+    <div class="f">
+      <label>직원 유무</label>
+      <div class="rg" id="rg-em">
+        <div class="ri ck" onclick="selEmp('없음',this)"><div class="rdot"></div>없음</div>
+        <div class="ri" onclick="selEmp('있음',this)"><div class="rdot"></div>있음</div>
+      </div>
+    </div>
+    <div class="cs cs-e" id="cs-emp">
+      <div class="row2">
+        <div class="f" style="margin-bottom:0">
+          <label>직원 수</label>
+          <input type="number" id="empCnt" placeholder="0" min="0">
+        </div>
+        <div class="f" style="margin-bottom:0">
+          <label>4대보험 관리번호 <span class="opt">(선택)</span></label>
+          <input type="text" id="insNo" placeholder="관리번호">
+        </div>
+      </div>
+    </div>
+
+    <div class="errbox" id="errbox"></div>
+
+    <div class="brow">
+      <button class="btn bbk" onclick="location.href='/'">← 신규 등록으로</button>
+      <button class="btn bsb" onclick="generate()">📄 서류 생성</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let btype = '';
+let hasEmp = false;
+
+function selType(t){
+  btype = t;
+  document.getElementById('bp').className = 'tbtn' + (t==='personal' ? ' sp' : '');
+  document.getElementById('bc').className = 'tbtn' + (t==='corp' ? ' sc' : '');
+}
+
+function selEmp(val, el){
+  hasEmp = val === '있음';
+  el.closest('.rg').querySelectorAll('.ri').forEach(r => r.classList.remove('ck'));
+  el.classList.add('ck');
+  document.getElementById('cs-emp').classList.toggle('show', hasEmp);
+}
+
+function fmtPhone(el){let v=el.value.replace(/\D/g,'');if(v.length<=3)el.value=v;else if(v.length<=7)el.value=v.slice(0,3)+'-'+v.slice(3);else el.value=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);}
+function fmtBiz(el){let v=el.value.replace(/\D/g,'');if(v.length<=3)el.value=v;else if(v.length<=5)el.value=v.slice(0,3)+'-'+v.slice(3);else el.value=v.slice(0,3)+'-'+v.slice(3,5)+'-'+v.slice(5,10);}
+function fmtNum(el){el.value=el.value.replace(/[^\d]/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+
+function generate(){
+  const bizName = document.getElementById('bizName').value.trim();
+  const repName = document.getElementById('repName').value.trim();
+  let ok = true;
+
+  // 필수값 체크
+  const bizEl = document.getElementById('bizName');
+  const repEl = document.getElementById('repName');
+  if(!bizName){bizEl.classList.add('er');document.getElementById('e-bizName').style.display='block';ok=false;}
+  else{bizEl.classList.remove('er');document.getElementById('e-bizName').style.display='none';}
+  if(!repName){repEl.classList.add('er');document.getElementById('e-repName').style.display='block';ok=false;}
+  else{repEl.classList.remove('er');document.getElementById('e-repName').style.display='none';}
+
+  if(!ok) return;
+
+  const feeRaw = document.getElementById('fee').value.replace(/,/g,'');
+
+  const payload = {
+    bizName,
+    repName,
+    bizType: btype || 'personal',
+    bizNum: document.getElementById('bizNum').value,
+    phone: document.getElementById('phone').value,
+    address: document.getElementById('addr').value,
+    repBirth: document.getElementById('repBirth').value,
+    fee: feeRaw,
+    cmsDay: document.getElementById('cmsDay').value || '25',
+    bank: document.getElementById('bank').value,
+    account: document.getElementById('account').value,
+    accountName: document.getElementById('accountName').value,
+    birthOrBizNum: document.getElementById('birthOrBizNum').value,
+    hasEmp,
+    empCount: parseInt(document.getElementById('empCnt').value) || 0,
+    insNo: document.getElementById('insNo').value,
+    contract: '기장',
+    tax: '일반과세',
+    htxId: '',
+    htxPw: '',
+    prevAgent: '없음',
+  };
+
+  sessionStorage.setItem('onboarding', JSON.stringify(payload));
+  window.location.href = '/forms/docs.html';
+}
+
+// 초기 직원 없음 선택
+document.addEventListener('DOMContentLoaded', () => {
+  const firstEmp = document.querySelector('#rg-em .ri');
+  if(firstEmp){ firstEmp.classList.add('ck'); firstEmp.querySelector('.rdot').classList.add('ck'); }
+});
+</script>
+</body>
+</html>
