@@ -3,491 +3,256 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>신규 고객 정보 등록 | 유진영 세무회계</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>유진영 세무회계</title>
+<meta name="description" content="유진영세무회계 - 신뢰할 수 있는 세무 파트너. 기장대리, 세무조정, 법인세·소득세·부가세 신고">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F4F1EB;--card:#FFF;--primary:#1A2744;--accent:#C8A96E;--text:#1C1C1E;--muted:#7A7A8A;--border:#E2DDD5;--p:#2563EB;--c:#7C3AED;--r:#DC2626;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);min-height:100vh;padding:40px 20px 80px;color:var(--text);}
-.wrap{max-width:660px;margin:0 auto;}
-.hdr{text-align:center;margin-bottom:36px;}
-.hdr-top{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;}
-.hdr-line{flex:1;max-width:60px;height:1px;background:linear-gradient(to right,transparent,var(--accent));}
-.hdr-line.r{background:linear-gradient(to left,transparent,var(--accent));}
-.hdr-office{font-family:'Noto Serif KR',serif;font-size:11px;letter-spacing:4px;color:var(--accent);font-weight:600;}
-.hdr h1{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:700;color:var(--primary);letter-spacing:-0.5px;line-height:1.35;}
-.hdr-sub-line{display:flex;align-items:center;gap:10px;justify-content:center;margin:12px 0;}
-.hdr-sub-line::before,.hdr-sub-line::after{content:'';width:24px;height:1px;background:var(--border);}
-.hdr-sub-line span{font-size:10px;letter-spacing:2px;color:var(--muted);}
-.hdr p{color:var(--muted);font-size:12.5px;margin-top:0;line-height:1.8;}
+:root {
+  --navy: #1B3A5C;
+  --navy-light: #2A5580;
+  --gold: #C5983E;
+  --gold-light: #E8C76A;
+  --beige: #F5F0E8;
+  --beige-dark: #EDE5D8;
+  --text: #333;
+  --text-light: #666;
+  --white: #fff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  color: var(--text); background: var(--beige); line-height: 1.8;
+}
 
-/* Progress */
-.prog{margin-bottom:28px;}
-.dots{display:flex;align-items:center;justify-content:center;}
-.sdot{width:32px;height:32px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:all .3s;flex-shrink:0;}
-.sdot.on{background:var(--primary);color:#fff;box-shadow:0 0 0 4px rgba(26,39,68,.1);}
-.sdot.done{background:var(--accent);color:#fff;}
-.sln{width:48px;height:2px;background:var(--border);transition:background .3s;}
-.sln.done{background:var(--accent);}
-.lbls{display:flex;justify-content:space-between;margin-top:8px;}
-.lbl{font-size:10px;color:var(--muted);text-align:center;flex:1;}
-.lbl.on{color:var(--primary);font-weight:700;}
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: var(--white); text-align: center; padding: 60px 20px 50px;
+  position: relative;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -30px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-top: 30px solid var(--navy-light);
+}
+.hero .eng { font-size: 12px; color: var(--gold-light); letter-spacing: 4px; margin-bottom: 12px; text-transform: uppercase; }
+.hero h1 { font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+.hero .sub { font-size: 15px; color: #a8c8e8; font-weight: 300; }
 
-/* Card */
-.card{background:var(--card);border-radius:16px;padding:36px;box-shadow:0 2px 20px rgba(0,0,0,.07);display:none;animation:fup .35s ease;margin-top:16px;}
-.card.on{display:block;}
-.ctitle{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:10px;margin-bottom:4px;}
-.cnum{background:var(--primary);color:var(--accent);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
-.csub{color:var(--muted);font-size:12px;margin-bottom:24px;padding-left:38px;}
+/* Container */
+.container { max-width: 720px; margin: 0 auto; padding: 50px 16px 40px; }
 
-/* Type toggle */
-.ttgl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
-.tbtn{padding:20px;border:2px solid var(--border);border-radius:12px;cursor:pointer;text-align:center;transition:all .2s;user-select:none;background:white;}
-.tbtn:hover{border-color:var(--primary);transform:translateY(-2px);}
-.tbtn.sp{border-color:var(--p);background:#EFF6FF;}
-.tbtn.sc{border-color:var(--c);background:#F5F3FF;}
-.tico{font-size:28px;margin-bottom:8px;}
-.tnm{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--primary);margin-bottom:4px;}
-.tbtn.sp .tnm{color:var(--p);}
-.tbtn.sc .tnm{color:var(--c);}
-.tds{font-size:11px;color:var(--muted);}
+/* About Card */
+.about-card {
+  background: var(--white); border-radius: 16px; padding: 36px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06); text-align: center;
+  margin-bottom: 20px;
+}
+.about-card .greeting {
+  font-size: 18px; font-weight: 700; color: var(--navy);
+  margin-bottom: 12px;
+}
+.about-card .desc {
+  font-size: 14px; color: var(--text-light); line-height: 2;
+}
+.about-card .desc strong { color: var(--navy); }
+.divider {
+  width: 40px; height: 3px; background: var(--gold);
+  margin: 20px auto; border-radius: 2px;
+}
 
-/* Fields */
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:520px){.row2{grid-template-columns:1fr;}.card{padding:24px;}.ttgl{grid-template-columns:1fr;}}
-.f{margin-bottom:18px;}
-label{display:block;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:7px;}
-.req{color:var(--accent);margin-left:2px;}
-.opt{color:var(--muted);font-size:9px;margin-left:4px;font-weight:400;letter-spacing:0;text-transform:none;}
-input,select{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:all .2s;-webkit-appearance:none;appearance:none;}
-input:focus,select:focus{border-color:var(--primary);background:white;box-shadow:0 0 0 3px rgba(26,39,68,.07);}
-input.er{border-color:var(--r);background:#FFF5F5;}
-.emsg{color:var(--r);font-size:10px;margin-top:4px;display:none;}
-.hint{font-size:10px;color:var(--muted);margin-top:4px;}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A7A8A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+/* Contact Info */
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 24px;
+}
+.contact-item {
+  background: var(--beige); border-radius: 10px; padding: 16px;
+  text-align: center;
+}
+.contact-item .label { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+.contact-item .value { font-size: 14px; font-weight: 700; color: var(--navy); }
+.contact-item .value a { color: var(--navy); text-decoration: none; }
 
-/* Radio */
-.rg{display:flex;gap:8px;flex-wrap:wrap;}
-.ri{display:flex;align-items:center;gap:7px;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;transition:all .18s;user-select:none;}
-.ri:hover{border-color:var(--primary);background:#F8F6FF;}
-.ri.ck{border-color:var(--primary);background:#EEF1F8;}
-.rdot{width:15px;height:15px;border-radius:50%;border:2px solid var(--border);transition:all .18s;flex-shrink:0;}
-.ri.ck .rdot{border-color:var(--primary);background:var(--primary);box-shadow:inset 0 0 0 3px white;}
+/* Section */
+.section-title {
+  font-size: 18px; font-weight: 700; color: var(--navy);
+  text-align: center; margin: 36px 0 16px;
+}
+.section-title .icon { font-size: 22px; margin-right: 6px; }
 
-/* Multi-select tags */
-.tags{display:flex;gap:8px;flex-wrap:wrap;}
-.tag{padding:9px 16px;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;transition:all .18s;user-select:none;background:white;color:var(--muted);}
-.tag:hover{border-color:var(--primary);color:var(--primary);}
-.tag.on{border-color:var(--primary);background:var(--primary);color:white;}
+/* Service Tags */
+.service-tags {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 10px; margin-bottom: 24px;
+}
+.service-tag {
+  background: var(--white); border: 1px solid var(--beige-dark);
+  border-radius: 20px; padding: 8px 18px;
+  font-size: 13px; color: var(--text); font-weight: 500;
+}
+.service-tag .emoji { margin-right: 4px; }
 
-/* Section divider */
-.dv{display:flex;align-items:center;gap:10px;margin:24px 0 18px;}
-.dv span{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;white-space:nowrap;}
-.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border);}
+/* Announcement Links */
+.announce-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-bottom: 20px;
+}
+.announce-card {
+  background: var(--white); border-radius: 14px; padding: 24px 16px;
+  text-align: center; text-decoration: none; color: var(--text);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: block;
+}
+.announce-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+}
+.announce-card .card-icon { font-size: 32px; margin-bottom: 10px; }
+.announce-card .card-title { font-size: 14px; font-weight: 700; color: var(--navy); }
+.announce-card .card-desc { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+.announce-card.highlight {
+  border: 2px solid var(--gold);
+}
+.announce-card.disabled {
+  opacity: 0.45; pointer-events: none;
+}
+.announce-card .badge {
+  display: inline-block; background: var(--gold); color: var(--white);
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: 10px; margin-bottom: 6px;
+}
+.announce-card .badge-soon {
+  display: inline-block; background: #ccc; color: #fff;
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: 10px; margin-bottom: 6px;
+}
 
-/* Conditional sections */
-.cs{border-radius:10px;padding:20px;margin-top:6px;display:none;animation:fup .3s ease;}
-.cs.show{display:block;}
-.cs-e{background:#F0FDF4;border:1.5px solid #BBF7D0;}
-.cs-y{background:#FFFBEB;border:1.5px solid #FDE68A;}
+/* CTA Button */
+.cta-section { text-align: center; margin: 32px 0; }
+.cta-btn {
+  display: inline-block; background: var(--navy);
+  color: var(--white); text-decoration: none;
+  padding: 16px 40px; border-radius: 30px;
+  font-size: 15px; font-weight: 700;
+  transition: background 0.2s;
+}
+.cta-btn:hover { background: var(--navy-light); }
 
-/* Buttons */
-.brow{display:flex;gap:10px;justify-content:flex-end;margin-top:28px;}
-.btn{padding:13px 28px;border-radius:9px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
-.bbk{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
-.bbk:hover{background:var(--bg);}
-.bnx{background:var(--primary);color:white;}
-.bnx:hover{background:#0F1830;transform:translateY(-1px);}
-.bsb{background:var(--accent);color:var(--primary);font-weight:700;font-size:15px;padding:14px 32px;}
-.bsb:hover{background:#B8953A;transform:translateY(-1px);}
-.bdoc{background:#EFF6FF;color:#1D4ED8;border:1.5px solid #BFDBFE;font-size:14px;padding:14px 24px;}
-.bdoc:hover{background:#DBEAFE;transform:translateY(-1px);}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+/* Footer */
+.footer {
+  background: var(--navy); color: #a8c8e8;
+  text-align: center; padding: 32px 20px; font-size: 12px; line-height: 2;
+}
+.footer .name { color: var(--white); font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.footer a { color: var(--gold-light); text-decoration: none; }
 
-/* Summary */
-.sumbox{background:var(--bg);border-radius:10px;padding:20px;}
-.sr{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);gap:10px;}
-.sr:last-child{border:none;}
-.sk{font-size:11px;color:var(--muted);flex-shrink:0;}
-.sv{font-size:13px;font-weight:600;color:var(--text);text-align:right;}
-.notice{background:#FFFBEB;border:1px solid #FDE68A;border-radius:9px;padding:14px;font-size:12px;color:#78580A;line-height:1.7;margin-top:16px;}
-.errbox{background:#FEF2F2;border:1px solid #FECACA;border-radius:9px;padding:14px;font-size:12px;color:#991B1B;margin-top:16px;display:none;}
-
-/* Loader */
-.ldov{display:none;position:fixed;inset:0;background:rgba(244,241,235,.9);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
-.ldov.show{display:flex;}
-.spin{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;}
-.ldtxt{color:var(--primary);font-size:15px;font-weight:500;}
-.ldsub{color:var(--muted);font-size:12px;}
-@keyframes fup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* Responsive */
+@media (max-width: 480px) {
+  .hero h1 { font-size: 26px; }
+  .hero { padding: 48px 16px 40px; }
+  .about-card { padding: 28px 20px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .announce-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<div class="ldov" id="ld">
-  <div class="spin"></div>
-  <div class="ldtxt">등록 및 서류 생성 중...</div>
-  <div class="ldsub">잠시만 기다려 주세요</div>
+
+<div class="hero">
+  <div class="eng">Yu Jin Young Tax &amp; Accounting</div>
+  <h1>유진영 세무회계</h1>
+  <div class="sub">신뢰할 수 있는 세무 파트너</div>
 </div>
 
-<div class="wrap" id="mf">
-  <div class="hdr">
-    <div class="hdr-top">
-      <div class="hdr-line"></div>
-      <div class="hdr-office">YU JIN YOUNG TAX OFFICE</div>
-      <div class="hdr-line r"></div>
-    </div>
-    <h1>신규 고객 정보 등록</h1>
-    <div class="hdr-sub-line"><span>NEW CLIENT REGISTRATION</span></div>
-    <p>아래 정보를 입력해 주시면 원활한 서비스를 제공해 드리겠습니다.<br>작성하신 내용은 세무 업무 처리 목적으로만 사용됩니다.</p>
-  </div>
+<div class="container">
 
-  <div class="prog">
-    <div class="dots">
-      <div class="sdot on" id="d1">1</div><div class="sln" id="l1"></div>
-      <div class="sdot" id="d2">2</div><div class="sln" id="l2"></div>
-      <div class="sdot" id="d3">3</div><div class="sln" id="l3"></div>
-      <div class="sdot" id="d4">4</div>
+  <div class="about-card">
+    <div class="greeting">안녕하세요, 대표세무사 유진영입니다.</div>
+    <div class="divider"></div>
+    <div class="desc">
+      소규모 사업자부터 법인까지,<br>
+      <strong>정확한 세무처리</strong>와 <strong>절세 컨설팅</strong>으로<br>
+      사업에만 집중하실 수 있도록 돕겠습니다.
     </div>
-    <div class="lbls">
-      <span class="lbl on" id="lb1">기본정보</span>
-      <span class="lbl" id="lb2">세무·계약</span>
-      <span class="lbl" id="lb3">CMS·홈택스</span>
-      <span class="lbl" id="lb4">직원·확인</span>
-    </div>
-  </div>
-
-  <!-- ===== STEP 1: 기본정보 ===== -->
-  <div class="card on" id="s1">
-    <div class="ctitle"><div class="cnum">1</div>기본 정보</div>
-    <div class="csub">사업자 유형을 먼저 선택하고 기본 정보를 입력해 주세요. <span style="color:var(--accent)">★</span> 표시만 필수입니다.</div>
-
-    <div class="ttgl">
-      <div class="tbtn" id="bp" onclick="selType('personal')">
-        <div class="tico">👤</div><div class="tnm">개인사업자</div><div class="tds">프리랜서, 소상공인 등</div>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="label">전화</div>
+        <div class="value"><a href="tel:010-6566-2351">010-6566-2351</a></div>
       </div>
-      <div class="tbtn" id="bc" onclick="selType('corp')">
-        <div class="tico">🏢</div><div class="tnm">법인사업자</div><div class="tds">주식회사, 유한회사 등</div>
+      <div class="contact-item">
+        <div class="label">팩스</div>
+        <div class="value">02-6280-2351</div>
       </div>
-    </div>
-
-    <div class="row2">
-      <div class="f"><label>상호명 <span class="req">★</span></label><input type="text" id="bizName" placeholder="예) 홍길동 카페"><div class="emsg" id="e-bizName">상호명을 입력해 주세요</div></div>
-      <div class="f"><label>대표자 성함 <span class="req">★</span></label><input type="text" id="repName" placeholder="예) 홍길동"><div class="emsg" id="e-repName">성함을 입력해 주세요</div></div>
-    </div>
-    <div class="f"><label>사업자등록번호 <span class="opt">(선택)</span></label><input type="text" id="bizNum" placeholder="000-00-00000" maxlength="12" oninput="fmtBiz(this)"></div>
-    <div class="row2">
-      <div class="f"><label>연락처 <span class="opt">(선택)</span></label><input type="tel" id="phone" placeholder="010-0000-0000" oninput="fmtPhone(this)"></div>
-      <div class="f"><label>이메일 <span class="opt">(선택)</span></label><input type="email" id="email" placeholder="example@email.com"></div>
-    </div>
-    <div class="f"><label>사업장 주소 <span class="opt">(선택)</span></label><input type="text" id="addr" placeholder="예) 서울시 강남구 테헤란로 123"></div>
-    <div class="f" id="f-repbirth">
-      <label>대표자 생년월일 <span class="opt">(선택 · 4대보험 서류에 사용)</span></label>
-      <input type="text" id="repBirth" placeholder="예) 19751020 (8자리)" maxlength="8">
-    </div>
-
-    <div class="brow"><button class="btn bnx" onclick="go(1)">다음 단계 →</button></div>
-  </div>
-
-  <!-- ===== STEP 2: 세무·계약 ===== -->
-  <div class="card" id="s2">
-    <div class="ctitle"><div class="cnum">2</div>세무 & 계약 정보</div>
-    <div class="csub">세무 업무 유형과 계약 내용을 선택해 주세요. 모두 선택 사항입니다.</div>
-
-    <div class="f">
-      <label>계약 유형</label>
-      <div class="rg" id="rg-ct">
-        <div class="ri" onclick="sr('ct','기장',this)"><div class="rdot"></div>기장</div>
-        <div class="ri" onclick="sr('ct','신고대리',this)"><div class="rdot"></div>신고대리</div>
-        <div class="ri" onclick="sr('ct','컨설팅',this)"><div class="rdot"></div>컨설팅</div>
+      <div class="contact-item">
+        <div class="label">이메일</div>
+        <div class="value"><a href="mailto:tax33458@naver.com">tax33458@naver.com</a></div>
       </div>
-    </div>
-
-    <div class="f">
-      <label>세무 유형 <span class="opt">(해당 항목 모두 선택)</span></label>
-      <div class="tags" id="tags-tax">
-        <div class="tag" onclick="toggleTag(this,'부가세')">부가세</div>
-        <div class="tag" onclick="toggleTag(this,'법인세')">법인세</div>
-        <div class="tag" onclick="toggleTag(this,'종합소득세')">종합소득세</div>
-        <div class="tag" onclick="toggleTag(this,'원천세')">원천세</div>
-        <div class="tag" onclick="toggleTag(this,'4대보험')">4대보험</div>
-        <div class="tag" onclick="toggleTag(this,'급여')">급여</div>
-        <div class="tag" onclick="toggleTag(this,'기장')">기장</div>
-        <div class="tag" onclick="toggleTag(this,'양도세')">양도세</div>
-        <div class="tag" onclick="toggleTag(this,'상속세')">상속세</div>
-        <div class="tag" onclick="toggleTag(this,'증여세')">증여세</div>
+      <div class="contact-item">
+        <div class="label">주소</div>
+        <div class="value" style="font-size:12px;">서울 송파구 백제고분로 385, 401호</div>
       </div>
-    </div>
-
-    <div class="f" id="f-taxtype">
-      <label>부가세 과세 유형</label>
-      <div class="rg" id="rg-tx">
-        <div class="ri" onclick="sr('tx','일반과세',this)"><div class="rdot"></div>일반과세</div>
-        <div class="ri" onclick="sr('tx','간이과세',this)"><div class="rdot"></div>간이과세</div>
-        <div class="ri" onclick="sr('tx','면세',this)"><div class="rdot"></div>면세</div>
-      </div>
-    </div>
-
-    <div class="f" id="f-prevagent">
-      <label>이전 세무대리인</label>
-      <div class="rg" id="rg-ag">
-        <div class="ri ck" onclick="sr('ag','없음',this)"><div class="rdot ck"></div>없음</div>
-        <div class="ri" onclick="sr('ag','있음',this)"><div class="rdot"></div>있음 (전기 자료 수령 필요)</div>
-      </div>
-    </div>
-
-    <div class="brow">
-      <button class="btn bbk" onclick="back(2)">← 이전</button>
-      <button class="btn bnx" onclick="go(2)">다음 단계 →</button>
     </div>
   </div>
 
-  <!-- ===== STEP 3: CMS·홈택스 ===== -->
-  <div class="card" id="s3">
-    <div class="ctitle"><div class="cnum">3</div>CMS & 홈택스 정보</div>
-    <div class="csub">기장료 및 자동이체, 홈택스 정보를 입력해 주세요. 모두 선택 사항입니다.</div>
-
-    <div class="dv"><span>기장료 & 자동이체</span></div>
-    <div class="row2">
-      <div class="f"><label>월 기장료 <span class="opt">(원, 선택)</span></label><input type="text" id="fee" placeholder="예) 150000" oninput="fmtNum(this)"></div>
-      <div class="f"><label>CMS 출금일 <span class="opt">(선택)</span></label>
-        <select id="cmsDay">
-          <option value="">선택</option>
-          <option value="5">5일</option>
-          <option value="10">10일</option>
-          <option value="15">15일</option>
-          <option value="20">20일</option>
-          <option value="25">25일</option>
-        </select>
-      </div>
-    </div>
-    <div class="row2">
-      <div class="f"><label>은행명 <span class="opt">(선택)</span></label><input type="text" id="bank" placeholder="예) 신한은행"></div>
-      <div class="f"><label>계좌번호 <span class="opt">(선택)</span></label><input type="text" id="account" placeholder="000-000-000000"></div>
-    </div>
-    <div class="row2">
-      <div class="f"><label>예금주 <span class="opt">(선택)</span></label><input type="text" id="accountName" placeholder="예금주명"></div>
-      <div class="f"><label>생년월일/사업자번호 <span class="opt">(CMS용)</span></label><input type="text" id="birthOrBizNum" placeholder="개인: 생년월일 6자리 / 법인: 사업자번호"></div>
-    </div>
-
-    <div class="dv"><span>홈택스 정보</span></div>
-    <div class="row2">
-      <div class="f"><label>홈택스 ID <span class="opt">(선택)</span></label><input type="text" id="htxId" placeholder="홈택스 아이디"></div>
-      <div class="f"><label>홈택스 비밀번호 <span class="opt">(선택)</span></label><input type="text" id="htxPw" placeholder="홈택스 비밀번호"></div>
-    </div>
-
-    <div class="brow">
-      <button class="btn bbk" onclick="back(3)">← 이전</button>
-      <button class="btn bnx" onclick="go(3)">다음 단계 →</button>
-    </div>
+  <div class="section-title">주요 서비스</div>
+  <div class="service-tags">
+    <span class="service-tag"><span class="emoji">&#128203;</span> 기장대리</span>
+    <span class="service-tag"><span class="emoji">&#128200;</span> 세무조정</span>
+    <span class="service-tag"><span class="emoji">&#128176;</span> 부가가치세</span>
+    <span class="service-tag"><span class="emoji">&#127970;</span> 법인세</span>
+    <span class="service-tag"><span class="emoji">&#128181;</span> 종합소득세</span>
+    <span class="service-tag"><span class="emoji">&#128101;</span> 연말정산</span>
+    <span class="service-tag"><span class="emoji">&#128218;</span> 양도·상속·증여세</span>
+    <span class="service-tag"><span class="emoji">&#128221;</span> 세무상담</span>
   </div>
 
-  <!-- ===== STEP 4: 직원현황 + 확인 ===== -->
-  <div class="card" id="s4">
-    <div class="ctitle"><div class="cnum">4</div>직원 현황 & 최종 확인</div>
-    <div class="csub">직원 여부를 확인하고 입력 내용을 검토해 주세요.</div>
+  <div class="section-title"><span class="icon">&#128227;</span> 신고 안내문</div>
 
-    <div class="f">
-      <label>직원 유무</label>
-      <div class="rg" id="rg-em">
-        <div class="ri ck" onclick="selEmp('없음',this)"><div class="rdot"></div>없음</div>
-        <div class="ri" onclick="selEmp('있음',this)"><div class="rdot"></div>있음</div>
-      </div>
-    </div>
+  <div class="announce-grid">
+    <a href="/vat" class="announce-card highlight">
+      <span class="badge">시즌</span>
+      <div class="card-icon">&#128203;</div>
+      <div class="card-title">부가가치세</div>
+      <div class="card-desc">신고 안내 &amp; 요청자료</div>
+    </a>
+    <a href="#" class="announce-card disabled">
+      <span class="badge-soon">준비중</span>
+      <div class="card-icon">&#127970;</div>
+      <div class="card-title">법인세</div>
+      <div class="card-desc">3월 신고 안내</div>
+    </a>
+    <a href="#" class="announce-card disabled">
+      <span class="badge-soon">준비중</span>
+      <div class="card-icon">&#128181;</div>
+      <div class="card-title">종합소득세</div>
+      <div class="card-desc">5월 신고 안내</div>
+    </a>
+    <a href="#" class="announce-card disabled">
+      <span class="badge-soon">준비중</span>
+      <div class="card-icon">&#128101;</div>
+      <div class="card-title">연말정산</div>
+      <div class="card-desc">1~2월 안내</div>
+    </a>
+  </div>
 
-    <div class="cs cs-e" id="cs-emp">
-      <div class="row2">
-        <div class="f"><label>정규직 인원수</label><input type="number" id="empCnt" placeholder="0" min="0"></div>
-        <div class="f"><label>4대보험 관리번호 <span class="opt">(선택)</span></label><input type="text" id="insNo" placeholder="관리번호"></div>
-      </div>
-    </div>
-
-    <div class="dv"><span>입력 내용 확인</span></div>
-    <div class="sumbox" id="sumbox"></div>
-
-    <div class="notice">⚠️ 입력하지 않은 항목은 나중에 거래처DB에서 직접 수정할 수 있습니다.</div>
-    <div class="errbox" id="errbox"></div>
-
-    <div class="brow">
-      <button class="btn bbk" onclick="back(4)">← 이전</button>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
-        <button class="btn bdoc" id="docbtn" onclick="docsOnly()">📄 서류만 생성</button>
-        <button class="btn bsb" id="subbtn" onclick="submit()">✅ 등록 & 서류 생성</button>
-      </div>
-    </div>
+  <div class="cta-section">
+    <a href="/register" class="cta-btn">신규 고객 등록하기</a>
   </div>
 
 </div>
 
-<script>
-let btype='';
-const D={ct:'',tx:'',ag:'없음',em:'없음',taxTypes:[]};
+<div class="footer">
+  <div class="name">유진영세무회계</div>
+  서울특별시 송파구 백제고분로 385, 401호<br>
+  Tel. <a href="tel:010-6566-2351">010-6566-2351</a> | Fax. 02-6280-2351<br>
+  <a href="mailto:tax33458@naver.com">tax33458@naver.com</a>
+</div>
 
-// 사업자 유형 선택
-function selType(t){
-  btype=t;
-  document.getElementById('bp').className='tbtn'+(t==='personal'?' sp':'');
-  document.getElementById('bc').className='tbtn'+(t==='corp'?' sc':'');
-}
-
-// 라디오 선택
-function sr(key,val,el){
-  D[key]=val;
-  el.closest('.rg').querySelectorAll('.ri').forEach(r=>{r.classList.remove('ck');r.querySelector('.rdot').classList.remove('ck');});
-  el.classList.add('ck');
-}
-
-// 세무유형 멀티셀렉트
-function toggleTag(el,val){
-  el.classList.toggle('on');
-  if(el.classList.contains('on')){
-    if(!D.taxTypes.includes(val)) D.taxTypes.push(val);
-  } else {
-    D.taxTypes=D.taxTypes.filter(v=>v!==val);
-  }
-}
-
-// 직원 유무
-function selEmp(val,el){
-  D.em=val;
-  el.closest('.rg').querySelectorAll('.ri').forEach(r=>r.classList.remove('ck'));
-  el.classList.add('ck');
-  document.getElementById('cs-emp').classList.toggle('show', val==='있음');
-}
-
-// 전화번호 포맷
-function fmtPhone(el){let v=el.value.replace(/\D/g,'');if(v.length<=3)el.value=v;else if(v.length<=7)el.value=v.slice(0,3)+'-'+v.slice(3);else el.value=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);}
-
-// 사업자번호 포맷
-function fmtBiz(el){let v=el.value.replace(/\D/g,'');if(v.length<=3)el.value=v;else if(v.length<=5)el.value=v.slice(0,3)+'-'+v.slice(3);else el.value=v.slice(0,3)+'-'+v.slice(3,5)+'-'+v.slice(5,10);}
-
-// 숫자 포맷
-function fmtNum(el){el.value=el.value.replace(/[^\d]/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,',');}
-
-// 진행 바 업데이트
-function updateProg(step){
-  for(let i=1;i<=4;i++){
-    const d=document.getElementById('d'+i);
-    const lb=document.getElementById('lb'+i);
-    d.className='sdot'+(i<step?' done':i===step?' on':'');
-    lb.className='lbl'+(i===step?' on':'');
-    if(i<4){const l=document.getElementById('l'+i);l.className='sln'+(i<step?' done':'');}
-  }
-}
-
-// 다음 단계
-function go(step){
-  if(step===1){
-    let ok=true;
-    const biz=document.getElementById('bizName');
-    const rep=document.getElementById('repName');
-    if(!biz.value.trim()){biz.classList.add('er');document.getElementById('e-bizName').style.display='block';ok=false;}else{biz.classList.remove('er');document.getElementById('e-bizName').style.display='none';}
-    if(!rep.value.trim()){rep.classList.add('er');document.getElementById('e-repName').style.display='block';ok=false;}else{rep.classList.remove('er');document.getElementById('e-repName').style.display='none';}
-    if(!ok)return;
-  }
-  document.getElementById('s'+step).classList.remove('on');
-  document.getElementById('s'+(step+1)).classList.add('on');
-  updateProg(step+1);
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(step+1===4) buildSum();
-}
-
-// 이전 단계
-function back(step){
-  document.getElementById('s'+step).classList.remove('on');
-  document.getElementById('s'+(step-1)).classList.add('on');
-  updateProg(step-1);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// 요약 생성
-function buildSum(){
-  const rows=[
-    ['사업자 구분', btype==='personal'?'개인사업자':btype==='corp'?'법인사업자':'(미선택)'],
-    ['상호명', document.getElementById('bizName').value||'-'],
-    ['대표자명', document.getElementById('repName').value||'-'],
-    ['사업자번호', document.getElementById('bizNum').value||'-'],
-    ['연락처', document.getElementById('phone').value||'-'],
-    ['이메일', document.getElementById('email').value||'-'],
-    ['계약 유형', D.ct||'-'],
-    ['세무 유형', D.taxTypes.length?D.taxTypes.join(', '):'-'],
-    ['과세 유형', D.tx||'-'],
-    ['월 기장료', document.getElementById('fee').value ? document.getElementById('fee').value+'원' : '-'],
-    ['직원 유무', D.em||'-'],
-  ];
-  document.getElementById('sumbox').innerHTML=rows.map(([k,v])=>`<div class="sr"><span class="sk">${k}</span><span class="sv">${v}</span></div>`).join('');
-}
-
-// 서류만 생성 (Notion 등록 없이)
-function docsOnly(){
-  const feeRaw=document.getElementById('fee').value.replace(/,/g,'');
-  const payload=buildPayload(feeRaw);
-  sessionStorage.setItem('onboarding',JSON.stringify(payload));
-  window.location.href='/forms/docs.html';
-}
-
-// payload 공통 빌더
-function buildPayload(feeRaw){
-  return {
-    bizName:document.getElementById('bizName').value,
-    repName:document.getElementById('repName').value,
-    bizNum:document.getElementById('bizNum').value,
-    phone:document.getElementById('phone').value,
-    email:document.getElementById('email').value,
-    address:document.getElementById('addr').value,
-    bizType:btype||'personal',
-    repBirth:document.getElementById('repBirth').value,
-    contract:D.ct||'기장',
-    tax:D.tx||'일반과세',
-    taxTypes:D.taxTypes,
-    prevAgent:D.ag||'없음',
-    fee:feeRaw,
-    cmsDay:document.getElementById('cmsDay').value||'25',
-    bank:document.getElementById('bank').value,
-    account:document.getElementById('account').value,
-    accountName:document.getElementById('accountName').value,
-    birthOrBizNum:document.getElementById('birthOrBizNum').value,
-    htxId:document.getElementById('htxId').value,
-    htxPw:document.getElementById('htxPw').value,
-    hasEmp:D.em==='있음',
-    empCount:parseInt(document.getElementById('empCnt').value)||0,
-    insNo:document.getElementById('insNo').value,
-  };
-}
-
-// 제출 (Notion 등록 + 서류 생성)
-async function submit(){
-  const btn=document.getElementById('subbtn');btn.disabled=true;
-  document.getElementById('errbox').style.display='none';
-  document.getElementById('ld').classList.add('show');
-
-  const feeRaw=document.getElementById('fee').value.replace(/,/g,'');
-  const payload=buildPayload(feeRaw);
-
-  try{
-    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const data=await r.json();
-    document.getElementById('ld').classList.remove('show');
-    if(r.ok&&data.success){
-      sessionStorage.setItem('onboarding',JSON.stringify(payload));
-      window.location.href='/forms/docs.html';
-    }else{throw new Error(data.error||'등록 실패');}
-  }catch(e){
-    document.getElementById('ld').classList.remove('show');
-    btn.disabled=false;
-    const eb=document.getElementById('errbox');
-    eb.style.display='block';
-    eb.textContent='⚠️ 오류: '+e.message;
-  }
-}
-
-// 초기화 (이전 세무대리인 기본값 설정)
-document.addEventListener('DOMContentLoaded',()=>{
-  const firstRi=document.querySelector('#rg-ag .ri');
-  if(firstRi){firstRi.classList.add('ck');firstRi.querySelector('.rdot').classList.add('ck');}
-  const firstEmp=document.querySelector('#rg-em .ri');
-  if(firstEmp){firstEmp.classList.add('ck');firstEmp.querySelector('.rdot').classList.add('ck');}
-});
-</script>
 </body>
 </html>
