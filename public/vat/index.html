@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부가가치세 신고 안내 | 유진영세무회계</title>
+<meta name="description" content="유진영세무회계 부가가치세 신고 안내문입니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B3A5C;
+  --navy-light: #2A5580;
+  --orange: #e65100;
+  --orange-bg: #fff3e0;
+  --green: #2e7d32;
+  --green-bg: #e8f5e9;
+  --purple: #7b1fa2;
+  --purple-bg: #f3e5f5;
+  --gray-bg: #f8f9fa;
+  --border: #e0e0e0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  color: #333; background: #f0f2f5; line-height: 1.8;
+}
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: #fff; text-align: center; padding: 48px 20px 40px;
+}
+.hero .office { font-size: 14px; color: #a8c8e8; margin-bottom: 8px; letter-spacing: 2px; }
+.hero h1 { font-size: 28px; font-weight: 900; margin-bottom: 8px; }
+.hero .period { font-size: 18px; color: #c8dff0; font-weight: 300; }
+.hero .period span { color: #ffd54f; font-weight: 700; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 16px 40px; }
+.info-card {
+  background: #fff; border-radius: 16px; margin-top: -24px; padding: 28px 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08); position: relative; z-index: 1;
+}
+.info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+.info-row:last-child { border-bottom: none; }
+.info-row .label { color: #888; font-size: 13px; }
+.info-row .value { font-weight: 700; color: var(--navy); font-size: 15px; }
+.deadline-banner {
+  background: var(--orange-bg); border: 2px solid #ff9800; border-radius: 12px;
+  padding: 20px; text-align: center; margin-top: 20px;
+}
+.deadline-banner .label { color: var(--orange); font-size: 13px; font-weight: 600; }
+.deadline-banner .date { color: var(--orange); font-size: 24px; font-weight: 900; margin-top: 4px; }
+.deadline-banner .sub { color: #999; font-size: 12px; margin-top: 4px; }
+.section { background: #fff; border-radius: 16px; margin-top: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.section-title {
+  font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 16px;
+  padding-bottom: 8px; border-bottom: 2px solid var(--navy);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title .icon { font-size: 20px; }
+.check-list { list-style: none; }
+.check-list li {
+  padding: 10px 12px; margin: 6px 0; background: var(--gray-bg);
+  border-radius: 8px; font-size: 14px; line-height: 1.7;
+  display: flex; gap: 8px;
+}
+.check-list li .bullet { color: var(--navy); font-weight: 700; flex-shrink: 0; }
+.highlight { color: var(--orange); font-weight: 600; }
+.tip-card {
+  background: var(--purple-bg); border-left: 4px solid var(--purple);
+  border-radius: 0 12px 12px 0; padding: 20px; margin-top: 16px;
+}
+.tip-card h3 { color: var(--purple); font-size: 15px; margin-bottom: 8px; }
+.tip-card p { font-size: 13px; color: #555; line-height: 1.8; }
+.reform-card {
+  background: var(--green-bg); border-left: 4px solid var(--green);
+  border-radius: 0 12px 12px 0; padding: 20px; margin-top: 16px;
+}
+.reform-card h3 { color: var(--green); font-size: 15px; margin-bottom: 10px; }
+.reform-card ul { list-style: none; }
+.reform-card li { font-size: 13px; line-height: 1.8; padding: 4px 0; color: #444; }
+.reform-card li::before { content: '\25B6 '; color: var(--green); font-size: 11px; }
+.schedule-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.schedule-table th {
+  background: var(--navy); color: #fff; padding: 10px 8px;
+  text-align: center; font-weight: 600; font-size: 12px;
+}
+.schedule-table td { padding: 10px 8px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+.schedule-table tr.current { background: var(--orange-bg); font-weight: 700; }
+.schedule-table tr.current td { color: var(--orange); }
+.footer {
+  text-align: center; padding: 32px 20px; color: #888; font-size: 12px; line-height: 1.8;
+}
+.footer .name { font-size: 15px; color: var(--navy); font-weight: 700; margin-bottom: 8px; }
+.footer a { color: var(--navy); text-decoration: none; }
+.note-text { color: #999; font-size: 12px; margin-top: 12px; line-height: 1.6; }
+@media (max-width: 480px) {
+  .hero h1 { font-size: 22px; }
+  .hero .period { font-size: 15px; }
+  .deadline-banner .date { font-size: 20px; }
+  .info-card, .section { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="office">YUJINYOUNG TAX &amp; ACCOUNTING</div>
+  <h1>부가가치세 신고 안내</h1>
+  <div class="period" id="heroPeriod"></div>
+</div>
+<div class="container">
+  <div class="info-card">
+    <div class="info-row">
+      <span class="label">과세기간</span>
+      <span class="value" id="taxPeriod"></span>
+    </div>
+    <div class="info-row" id="ganyiRow" style="display:none">
+      <span class="label">간이과세자</span>
+      <span class="value" id="ganyiPeriod" style="font-size:12px; color:#888;"></span>
+    </div>
+    <div class="info-row">
+      <span class="label">신고·납부기한</span>
+      <span class="value" id="deadline"></span>
+    </div>
+    <div class="deadline-banner">
+      <div class="label">📌 자료 제출 요청기한</div>
+      <div class="date" id="submitDate"></div>
+      <div class="sub">기한 내 자료를 보내주셔야 정확한 신고가 가능합니다</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><span class="icon">📋</span> 공통 요청 자료</div>
+    <ul class="check-list">
+      <li><span class="bullet">☑</span><div><span class="highlight">종이세금계산서 및 종이계산서</span><br>전자 발행분은 보관만 하시면 됩니다. 종이로 발급/수취한 건은 반드시 전달해주세요.</div></li>
+      <li><span class="bullet">☑</span><div><span class="highlight">세금계산서 미발급 매출 자료</span><br>순수현금, 제로페이, 지역화폐, 국외용역대금 등</div></li>
+      <li><span class="bullet">☑</span><div>자산취득내역 — 기계장치, 비품, 전자제품 등 100만원 초과 구입건</div></li>
+      <li><span class="bullet">☑</span><div>차량 취득/리스/렌트 — 계약서, 부대비용영수증, 차량등록증</div></li>
+      <li><span class="bullet">☑</span><div>홈택스 미등록 신용카드 중 업무 사용분 영수증</div></li>
+      <li><span class="bullet">☑</span><div><span class="highlight">법인사업자</span> — 해당 기간 모든 은행, 모든 계좌 엑셀 제출 (보통예금, 적금, 대출 등)</div></li>
+      <li><span class="bullet">☑</span><div>사업자등록증 변동사항 있으면 알려주세요</div></li>
+    </ul>
+    <div class="note-text">
+      ※ 안내문은 참고용입니다. 기존 거래 외 추가 거래내역이 있는 경우 꼭 사전에 상담 요청해 주세요.<br>
+      개별 요청자료는 카카오톡 또는 이메일로 별도 안내드립니다.
+    </div>
+  </div>
+  <div class="tip-card">
+    <h3>💡 부가가치세 절세 Tip</h3>
+    <p>사업 관련 지출은 반드시 <strong>적격증빙(세금계산서, 신용카드, 현금영수증)</strong>을 수취해야 매입세액 공제가 됩니다.
+    특히 사용하시는 <strong>모든 신용카드를 홈택스에 등록</strong>해두시면 상당한 절세 효과가 있습니다.
+    신용카드 신규발급·갱신 시 바로 홈택스에 등록해주세요.</p>
+  </div>
+  <div class="reform-card" id="reformSection">
+    <h3>📢 개정세법 안내</h3>
+    <ul id="reformList"></ul>
+  </div>
+  <div class="section">
+    <div class="section-title"><span class="icon">📅</span> 연간 주요 세무일정</div>
+    <table class="schedule-table">
+      <tr><th>월</th><th>주요 일정</th><th>기한</th></tr>
+      <tr id="s01"><td>1월</td><td>부가가치세 2기 확정 신고·납부</td><td>1/25</td></tr>
+      <tr id="s02"><td>2월</td><td>연말정산, 면세사업장현황신고</td><td>2/10, 2/28</td></tr>
+      <tr id="s03"><td>3월</td><td>법인세 신고, 보수총액신고</td><td>3/31</td></tr>
+      <tr id="s04"><td>4월</td><td>부가세 예정신고(법인) / 예정고지(개인)</td><td>4/25</td></tr>
+      <tr id="s05"><td>5월</td><td>종합소득세 신고·납부</td><td>5/31</td></tr>
+      <tr id="s06"><td>6월</td><td>성실사업자 종합소득세 신고</td><td>6/30</td></tr>
+      <tr id="s07"><td>7월</td><td>부가가치세 1기 확정 신고·납부</td><td>7/25</td></tr>
+      <tr id="s08"><td>8월</td><td>법인세 예정신고/예정고지</td><td></td></tr>
+      <tr id="s09"><td>9월</td><td>재산세 납부 (토지·주택)</td><td></td></tr>
+      <tr id="s10"><td>10월</td><td>부가세 예정신고(법인) / 예정고지(개인)</td><td>10/25</td></tr>
+      <tr id="s11"><td>11월</td><td>종합소득세 예정납부</td><td></td></tr>
+      <tr id="s12"><td>12월</td><td>종합부동산세 납부</td><td>12/1~15</td></tr>
+    </table>
+  </div>
+</div>
+<div class="footer">
+  <div class="name">유진영세무회계</div>
+  서울특별시 송파구 백제고분로 385, 401호<br>
+  Tel. <a href="tel:010-6566-2351">010-6566-2351</a> | Fax. 02-6280-2351<br>
+  <a href="mailto:tax33458@naver.com">tax33458@naver.com</a>
+</div>
+<script>
+(function() {
+  var now = new Date();
+  var month = now.getMonth() + 1;
+  var year = now.getFullYear();
+  var period, startM, endM, deadlineY, deadlineM;
+  if (month >= 1 && month <= 7) {
+    period = 1; startM = 1; endM = 6; deadlineY = year; deadlineM = 7;
+  } else {
+    period = 2; startM = 7; endM = 12; deadlineY = year + 1; deadlineM = 1;
+  }
+  if (month === 1) {
+    period = 2; startM = 7; endM = 12; deadlineY = year; deadlineM = 1;
+    year = year - 1;
+  }
+  var endDay = endM === 6 ? 30 : 31;
+  var days = ['일','월','화','수','목','금','토'];
+  var deadlineDow = days[new Date(deadlineY, deadlineM - 1, 25).getDay()];
+  var submitD = new Date(deadlineY, deadlineM - 1, 18);
+  while (submitD.getDay() === 0 || submitD.getDay() === 6) { submitD.setDate(submitD.getDate() - 1); }
+  var submitDow = days[submitD.getDay()];
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  document.getElementById('heroPeriod').innerHTML = year + '년 <span>' + period + '기 확정</span>';
+  document.getElementById('taxPeriod').textContent = year + '.' + pad(startM) + '.01 ~ ' + year + '.' + pad(endM) + '.' + endDay;
+  document.getElementById('deadline').textContent = deadlineY + '년 ' + deadlineM + '월 25일 (' + deadlineDow + ')';
+  document.getElementById('submitDate').textContent = submitD.getFullYear() + '년 ' + (submitD.getMonth()+1) + '월 ' + submitD.getDate() + '일 (' + submitDow + ')까지';
+  document.getElementById('ganyiRow').style.display = '';
+  document.getElementById('ganyiPeriod').textContent = '간이과세자도 세금계산서 발행 건이 있으면 신고 필요';
+  var cm = now.getMonth() + 1;
+  for (var i = 1; i <= 12; i++) {
+    var row = document.getElementById('s' + pad(i));
+    if (row && i === cm) row.className = 'current';
+  }
+  var reforms = [
+    '간이과세자 기준금액 1억 400만원으로 상향',
+    '전자세금계산서 의무발행 대상 확대 (개인사업자 8,000만원 이상)',
+    '영세율 첨부서류 미제출 가산세 신설 유의'
+  ];
+  var list = document.getElementById('reformList');
+  reforms.forEach(function(r) {
+    var li = document.createElement('li');
+    li.textContent = r;
+    list.appendChild(li);
+  });
+})();
+</script>
+</body>
+</html>
