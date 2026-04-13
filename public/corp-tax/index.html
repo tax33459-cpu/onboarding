@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>법인세 신고 안내 | 유진영세무회계</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F0F4F8;--card:#fff;--navy:#1B3A5C;--navy-light:#2A5580;--gold:#C5983E;--accent:#2E7D32;--text:#333;--muted:#777;--border:#E0E0E0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text)}
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;text-align:center;padding:48px 20px 40px}
+.hero .office{font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:8px}
+.hero h1{font-size:26px;font-weight:900;margin-bottom:6px}
+.hero .sub{font-size:14px;color:#a8c8e8;font-weight:300}
+.container{max-width:640px;margin:0 auto;padding:28px 16px 40px}
+.info-box{background:var(--card);border-radius:14px;padding:28px 24px;box-shadow:0 2px 16px rgba(0,0,0,.05);margin-bottom:16px}
+.info-box h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.info-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border:none}
+.info-row .label{font-size:13px;color:var(--muted);flex-shrink:0}
+.info-row .value{font-size:14px;font-weight:700;color:var(--navy);text-align:right}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:14px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.7}
+.checklist li:last-child{border:none}
+.checklist .title{font-weight:700;color:var(--accent)}
+.checklist .desc{font-size:12px;color:var(--muted);margin-top:2px}
+.tip-box{background:#FFF8E1;border:1px solid #FFE082;border-radius:12px;padding:20px;margin-bottom:16px}
+.tip-box h3{font-size:14px;font-weight:700;color:#E65100;margin-bottom:10px}
+.tip-box ul{list-style:none;padding:0}
+.tip-box li{font-size:13px;line-height:1.8;color:#5D4037;padding-left:18px;position:relative}
+.tip-box li::before{content:'\2714';position:absolute;left:0;color:var(--accent);font-size:12px}
+.footer{background:var(--navy);color:#a8c8e8;text-align:center;padding:28px 20px;font-size:11px;line-height:2}
+.footer .name{color:#fff;font-weight:700;font-size:14px;margin-bottom:4px}
+.footer a{color:var(--gold);text-decoration:none}
+@media(max-width:480px){.hero h1{font-size:22px}.hero{padding:36px 16px 32px}.info-box{padding:22px 18px}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="office">유진영세무회계</div>
+  <h1>법인세 신고 안내</h1>
+  <div class="sub" id="heroPeriod"></div>
+</div>
+<div class="container">
+
+  <div class="info-box">
+    <h2>&#128197; 신고 일정</h2>
+    <div class="info-row"><span class="label">사업연도</span><span class="value" id="taxPeriod"></span></div>
+    <div class="info-row"><span class="label">신고·납부 기한</span><span class="value" id="deadline"></span></div>
+    <div class="info-row"><span class="label">자료 제출 기한</span><span class="value" id="submitDate"></span></div>
+  </div>
+
+  <div class="info-box">
+    <h2>&#128203; 요청 자료</h2>
+    <ul class="checklist">
+      <li><span class="title">결산 관련 서류</span><div class="desc">재무제표, 합계잔액시산표, 계정별원장</div></li>
+      <li><span class="title">매출·매입 증빙</span><div class="desc">세금계산서 합계표, 카드·현금영수증 내역</div></li>
+      <li><span class="title">통장 거래내역</span><div class="desc">법인 명의 모든 계좌 연간 거래내역서</div></li>
+      <li><span class="title">인건비 관련</span><div class="desc">급여대장, 원천징수이행상황신고서, 4대보험 납부내역</div></li>
+      <li><span class="title">감가상각 자산</span><div class="desc">당기 취득·처분 자산 내역 (취득가액, 취득일 등)</div></li>
+      <li><span class="title">기타</span><div class="desc">차량 관련 비용, 접대비 명세, 기부금 영수증 등</div></li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <h3>&#128161; 절세 Tip</h3>
+    <ul>
+      <li>중소기업 특별세액감면 적용 여부를 확인하세요</li>
+      <li>이월결손금 공제 한도(80%)를 활용하세요</li>
+      <li>접대비 한도 초과 여부를 미리 점검하세요</li>
+      <li>업무용승용차 비용 한도(1,500만원)를 체크하세요</li>
+    </ul>
+  </div>
+
+</div>
+<div class="footer">
+  <div class="name">유진영세무회계</div>
+  Tel. <a href="tel:010-6566-2351">010-6566-2351</a> | Fax. 02-6280-2351<br>
+  <a href="mailto:tax33458@naver.com">tax33458@naver.com</a>
+</div>
+<script>
+(function(){
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = now.getMonth() + 1;
+  // 법인세는 12월 결산법인 기준 다음해 3월 신고
+  // 1~3월이면 전년도 사업연도, 4~12월이면 당해연도(아직 신고 전이므로 다음 3월 안내)
+  var taxYear = month <= 3 ? year - 1 : year;
+  var deadlineYear = taxYear + 1;
+  document.getElementById('heroPeriod').textContent = taxYear + '년 12월 결산법인';
+  document.getElementById('taxPeriod').textContent = taxYear + '.01.01 ~ ' + taxYear + '.12.31';
+  document.getElementById('deadline').textContent = deadlineYear + '년 3월 31일 (월)';
+  // 자료제출 기한: 신고 2주 전
+  document.getElementById('submitDate').textContent = deadlineYear + '년 3월 14일까지';
+})();
+</script>
+</body>
+</html>
