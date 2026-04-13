@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유진영세무회계 - 신규 거래처 온보딩 V1</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", sans-serif; }
+  .section-title { border-left: 4px solid #2563eb; padding-left: 12px; }
+  .field-label { font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 4px; display: block; }
+  .field-label .required { color: #dc2626; margin-left: 2px; }
+  .field-input, .field-select, .field-textarea {
+    width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px;
+    font-size: 0.95rem; transition: all 0.15s;
+  }
+  .field-input:focus, .field-select:focus, .field-textarea:focus {
+    outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  .field-textarea { min-height: 80px; resize: vertical; }
+  .checkbox-card {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 8px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .checkbox-card:hover { background: #f9fafb; border-color: #93c5fd; }
+  .checkbox-card input:checked ~ .checkbox-text { color: #1d4ed8; font-weight: 600; }
+  .checkbox-card:has(input:checked) { background: #eff6ff; border-color: #2563eb; }
+  .action-row {
+    display: flex; align-items: center; gap: 10px; padding: 10px 0;
+    font-size: 0.9rem; color: #4b5563;
+  }
+  .action-row .icon { width: 20px; height: 20px; background: #dbeafe; color: #1e40af;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: bold; flex-shrink: 0; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen py-8">
+
+<div class="max-w-4xl mx-auto px-4">
+
+  <!-- 헤더 -->
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xl">⚖️</div>
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">유진영세무회계</h1>
+        <p class="text-sm text-gray-500">신규 거래처 온보딩 자동화 · V1 프로토타입</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 설명 박스 -->
+  <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+    <div class="flex gap-3">
+      <div class="text-2xl">📋</div>
+      <div class="text-sm text-gray-700 leading-relaxed">
+        <div class="font-semibold text-blue-900 mb-1">이 폼은 한 번 입력으로 여러 작업을 동시에 처리합니다.</div>
+        제출 버튼을 누르면 <strong>노션 거래처 DB 등록 · 계약서/CMS/수임동의서 자동 생성 · 플랫폼세무사회 업로드용 엑셀 생성</strong>이 한 번에 실행됩니다.
+        (※ V1 프로토타입 단계 — 현재는 입력값만 확인하며, 백엔드 자동화는 다음 단계에서 연결합니다.)
+      </div>
+    </div>
+  </div>
+
+  <form id="onboardingForm" class="space-y-6">
+
+    <!-- 섹션 1: 기본 정보 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="section-title text-lg font-bold text-gray-900 mb-4">기본 정보</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+          <label class="field-label">수임업체명 (상호)<span class="required">*</span></label>
+          <input type="text" name="company_name" class="field-input" placeholder="예) 라쿤비즈" required>
+        </div>
+
+        <div>
+          <label class="field-label">사업자등록번호<span class="required">*</span></label>
+          <input type="text" name="business_number" class="field-input" placeholder="000-00-00000" required pattern="[0-9\-]{10,12}">
+        </div>
+
+        <div>
+          <label class="field-label">대표자명<span class="required">*</span></label>
+          <input type="text" name="representative" class="field-input" placeholder="예) 홍길동" required>
+        </div>
+
+        <div>
+          <label class="field-label">법인/개인 구분<span class="required">*</span></label>
+          <select name="entity_type" class="field-select" required>
+            <option value="">선택하세요</option>
+            <option value="개인">개인사업자</option>
+            <option value="법인">법인사업자</option>
+            <option value="기타">기타 (프리랜서 등)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">과세유형<span class="required">*</span></label>
+          <select name="tax_type" class="field-select" required>
+            <option value="">선택하세요</option>
+            <option value="일반과세">일반과세자</option>
+            <option value="간이과세">간이과세자</option>
+            <option value="면세">면세사업자</option>
+            <option value="비영리">비영리법인</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">업태</label>
+          <input type="text" name="business_category" class="field-input" placeholder="예) 도매 및 소매업">
+        </div>
+
+        <div>
+          <label class="field-label">종목</label>
+          <input type="text" name="business_item" class="field-input" placeholder="예) 전자상거래 소매업">
+        </div>
+
+        <div>
+          <label class="field-label">개업일</label>
+          <input type="date" name="opening_date" class="field-input">
+        </div>
+
+        <div>
+          <label class="field-label">주민(법인)등록번호<span class="required">*</span></label>
+          <input type="text" name="resident_corp_number" class="field-input" placeholder="000000-0000000 (개인: 대표자 주민번호 / 법인: 법인등록번호)" required>
+          <p class="text-xs text-gray-500 mt-1">※ 주민번호 앞자리가 각종 서식(수임동의서·계약서 등)에 자동 반영됩니다.</p>
+        </div>
+
+        <div>
+          <label class="field-label">수임상태<span class="required">*</span></label>
+          <select name="contract_status" class="field-select" required>
+            <option value="수임" selected>수임</option>
+            <option value="해임">해임</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">휴폐업 여부<span class="required">*</span></label>
+          <select name="business_status" id="business_status" class="field-select" required>
+            <option value="개업" selected>개업</option>
+            <option value="휴업">휴업</option>
+            <option value="폐업">폐업</option>
+            <option value="미등록">미등록사업자</option>
+          </select>
+        </div>
+
+        <div id="closeDateWrap" style="display:none;">
+          <label class="field-label">폐업일</label>
+          <input type="date" name="close_date" class="field-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 2: 연락 정보 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="section-title text-lg font-bold text-gray-900 mb-4">연락 정보</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="field-label">대표자 연락처<span class="required">*</span></label>
+          <input type="tel" name="phone" class="field-input" placeholder="010-0000-0000" required>
+        </div>
+
+        <div>
+          <label class="field-label">이메일</label>
+          <input type="email" name="email" class="field-input" placeholder="example@example.com">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="field-label">사업장 주소</label>
+          <input type="text" name="address" class="field-input" placeholder="예) 서울특별시 송파구 백제고분로 28길 8-19">
+        </div>
+
+        <div>
+          <label class="field-label">실무 담당자명 (거래처 직원)</label>
+          <input type="text" name="contact_person" class="field-input" placeholder="세무 자료 주고받을 실무자">
+        </div>
+
+        <div>
+          <label class="field-label">실무 담당자 연락처</label>
+          <input type="tel" name="contact_phone" class="field-input" placeholder="010-0000-0000">
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 3: 사무소 내부 관리 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="section-title text-lg font-bold text-gray-900 mb-4">사무소 내부 관리</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="field-label">담당세무사<span class="required">*</span></label>
+          <select name="responsible_cta" class="field-select" required>
+            <option value="유진영" selected>유진영</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">담당직원<span class="required">*</span></label>
+          <select name="staff" class="field-select" required>
+            <option value="유진영" selected>유진영</option>
+            <option value="미지정">미지정</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">수임업체 구분</label>
+          <select name="client_type" class="field-select">
+            <option value="기장대행">기장대행</option>
+            <option value="신고대행">신고대행</option>
+            <option value="세무상담">세무상담</option>
+            <option value="조정">조정업무</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">수임 시작일<span class="required">*</span></label>
+          <input type="date" name="contract_start" class="field-input" required>
+        </div>
+
+        <div>
+          <label class="field-label">월 기장료 (원)</label>
+          <input type="number" name="monthly_fee" class="field-input" placeholder="100000" min="0" step="10000">
+        </div>
+
+        <div>
+          <label class="field-label">부가세 신고료 (원)</label>
+          <input type="number" name="vat_fee" class="field-input" placeholder="0" min="0" step="10000">
+        </div>
+
+        <div>
+          <label class="field-label">급여신고 유형<span class="required">*</span></label>
+          <select name="payroll_filing_type" class="field-select" required>
+            <option value="">선택하세요</option>
+            <option value="매월">매월</option>
+            <option value="반기">반기</option>
+            <option value="무실적">무실적</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">퇴직연금<span class="required">*</span></label>
+          <select name="retirement_pension" class="field-select" required>
+            <option value="미가입" selected>미가입</option>
+            <option value="확정급여형">확정급여형 (DB)</option>
+            <option value="확정기여형">확정기여형 (DC)</option>
+            <option value="기업형">기업형 IRP</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="field-label">4대보험 비고</label>
+          <textarea name="insurance_memo" class="field-textarea" placeholder="예) 대표자 건강보험 지역가입, 고용보험 면제 대상, 사업장 합산관리 등"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 3-1: 홈택스 계정 정보 -->
+    <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-6">
+      <h2 class="section-title text-lg font-bold text-gray-900 mb-2" style="border-left-color:#d97706;">홈택스 계정 정보 <span class="text-xs font-normal text-amber-700 ml-2">🔒 민감 정보</span></h2>
+      <p class="text-xs text-gray-500 mb-4">※ 거래처 로그인 대행용. 노션에는 암호화 저장하거나 비밀번호는 별도 안전 저장소(예: 1Password) 링크로 관리하는 것을 권장합니다.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="field-label">홈택스 아이디</label>
+          <input type="text" name="hometax_id" class="field-input" autocomplete="off" placeholder="거래처 홈택스 ID">
+        </div>
+
+        <div>
+          <label class="field-label">홈택스 비밀번호</label>
+          <input type="password" name="hometax_pw" class="field-input" autocomplete="new-password" placeholder="거래처 홈택스 PW">
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 4: CMS 자동이체 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="section-title text-lg font-bold text-gray-900 mb-4">CMS 자동이체 정보</h2>
+
+      <div class="mb-3">
+        <label class="checkbox-card">
+          <input type="checkbox" name="use_cms" id="use_cms" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">CMS 자동이체 사용 (체크하면 아래 계좌 정보 기입)</span>
+        </label>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="cmsFields">
+        <div>
+          <label class="field-label">은행명</label>
+          <select name="bank" class="field-select">
+            <option value="">선택</option>
+            <option>국민은행</option><option>신한은행</option><option>우리은행</option>
+            <option>하나은행</option><option>농협은행</option><option>기업은행</option>
+            <option>카카오뱅크</option><option>토스뱅크</option><option>새마을금고</option>
+            <option>우체국</option><option>기타</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label">계좌번호</label>
+          <input type="text" name="account_number" class="field-input" placeholder="000000-00-000000">
+        </div>
+
+        <div>
+          <label class="field-label">예금주</label>
+          <input type="text" name="account_holder" class="field-input" placeholder="예금주명">
+        </div>
+
+        <div>
+          <label class="field-label">출금일</label>
+          <select name="withdrawal_day" class="field-select">
+            <option value="">선택</option>
+            <option value="5">매월 5일</option>
+            <option value="10">매월 10일</option>
+            <option value="15">매월 15일</option>
+            <option value="20">매월 20일</option>
+            <option value="25">매월 25일</option>
+            <option value="말일">매월 말일</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 5: 신고 대상 체크박스 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="section-title text-lg font-bold text-gray-900 mb-4">신고·관리 대상</h2>
+      <p class="text-xs text-gray-500 mb-3">플랫폼세무사회 신고현황에 자동 반영될 업무 범위입니다.</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_vat" class="mt-0.5 w-5 h-5 accent-blue-600" checked>
+          <span class="checkbox-text text-sm">부가가치세</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_withholding" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">원천세</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_income" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">종합소득세</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_corporate" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">법인세</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_insurance" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">4대보험</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_yearend" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">연말정산</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_payroll" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">급여 기장</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_payment" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">지급명세서</span>
+        </label>
+        <label class="checkbox-card">
+          <input type="checkbox" name="scope_adjustment" class="mt-0.5 w-5 h-5 accent-blue-600">
+          <span class="checkbox-text text-sm">세무조정</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 섹션 6: 특이사항 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="section-title text-lg font-bold text-gray-900 mb-4">특이사항 메모</h2>
+
+      <div>
+        <label class="field-label">내부 메모 (노션 거래처 DB에 저장됨)</label>
+        <textarea name="memo" class="field-textarea" placeholder="거래처 특성, 주의사항, 상담 이력, 소개 경로 등"></textarea>
+      </div>
+    </div>
+
+    <!-- 제출 후 자동 실행될 작업 안내 -->
+    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+      <h2 class="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+        <span>⚡</span>
+        <span>제출 시 자동으로 실행될 작업</span>
+      </h2>
+
+      <div class="space-y-1 mb-4">
+        <div class="action-row"><div class="icon">1</div><span><strong>노션 거래처 DB</strong>에 새 페이지 생성 (전체 필드 자동 매핑)</span></div>
+        <div class="action-row"><div class="icon">2</div><span><strong>기장대행 계약서</strong> .docx 자동 생성 (상호·사업자번호·대표자·기장료 치환)</span></div>
+        <div class="action-row"><div class="icon">3</div><span><strong>CMS 자동이체 신청서</strong> .docx 자동 생성 (체크된 경우)</span></div>
+        <div class="action-row"><div class="icon">4</div><span><strong>홈택스 수임동의서</strong> .docx 자동 생성</span></div>
+        <div class="action-row"><div class="icon">5</div><span><strong>4대보험 수임동의서</strong> .docx 자동 생성 (4대보험 체크된 경우)</span></div>
+        <div class="action-row"><div class="icon">6</div><span><strong>플랫폼세무사회 업로드용 엑셀</strong> 1줄 자동 생성 (시나리오 A 백업용)</span></div>
+        <div class="action-row"><div class="icon">7</div><span><strong>홈택스 계정</strong>은 노션에 암호화 저장 또는 외부 비밀번호 저장소 링크로 관리 (민감 정보)</span></div>
+      </div>
+
+      <div class="text-xs text-gray-500 border-t border-blue-200 pt-3">
+        ※ 시나리오 A: YOUNG님이 기장료 세금계산서 발행 → 플랫폼세무사회 자동 동기화 (이 경우 6번 엑셀은 사용 안 해도 됨)<br>
+        ※ 시나리오 B: 자동 동기화가 안 되는 경우 6번 엑셀을 플랫폼에 수동 업로드 (1클릭)
+      </div>
+    </div>
+
+    <!-- 제출 버튼 -->
+    <div class="flex gap-3">
+      <button type="reset" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition">
+        초기화
+      </button>
+      <button type="submit" class="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm">
+        제출하고 자동화 실행 ⚡
+      </button>
+    </div>
+
+  </form>
+
+  <!-- 푸터 -->
+  <div class="mt-8 text-center text-xs text-gray-400">
+    유진영세무회계 · 신규 거래처 온보딩 자동화 V1 프로토타입<br>
+    백엔드 자동화 연결 전 단계 — 입력 구조 검증용
+  </div>
+</div>
+
+<!-- 제출 결과 모달 -->
+<div id="resultModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-xl">✓</div>
+        <div>
+          <h3 class="text-lg font-bold text-gray-900">입력값 확인 완료</h3>
+          <p class="text-sm text-gray-500">V1 프로토타입 — 아래 데이터로 백엔드 자동화가 실행될 예정입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6">
+      <h4 class="text-sm font-semibold text-gray-700 mb-2">입력 데이터</h4>
+      <pre id="resultData" class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-xs text-gray-800 overflow-x-auto"></pre>
+
+      <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-gray-700">
+        <strong class="text-yellow-900">📌 다음 단계:</strong><br>
+        이 입력 구조에 문제가 없다면 백엔드(노션 API + 문서 생성 + 엑셀 출력)를 연결하여 V2로 업그레이드합니다.
+        빠진 필드나 불필요한 필드가 있다면 Claude에게 알려주세요.
+      </div>
+    </div>
+
+    <div class="p-6 border-t border-gray-200 flex justify-end">
+      <button onclick="document.getElementById('resultModal').classList.add('hidden'); document.getElementById('resultModal').classList.remove('flex');"
+              class="px-5 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition">
+        닫기
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 휴폐업 = 폐업일 때만 폐업일 칸 노출
+document.getElementById('business_status').addEventListener('change', function() {
+  document.getElementById('closeDateWrap').style.display = (this.value === '폐업') ? '' : 'none';
+});
+
+document.getElementById('onboardingForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  const data = {};
+  for (const [key, value] of formData.entries()) {
+    if (data[key]) {
+      if (Array.isArray(data[key])) { data[key].push(value); }
+      else { data[key] = [data[key], value]; }
+    } else {
+      data[key] = value;
+    }
+  }
+  // 체크박스 boolean으로 정리
+  const checkboxNames = ['use_cms','scope_vat','scope_withholding','scope_income','scope_corporate','scope_insurance','scope_yearend','scope_payroll','scope_payment','scope_adjustment'];
+  checkboxNames.forEach(name => {
+    data[name] = data[name] ? true : false;
+  });
+
+  document.getElementById('resultData').textContent = JSON.stringify(data, null, 2);
+  const modal = document.getElementById('resultModal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+});
+</script>
+
+</body>
+</html>

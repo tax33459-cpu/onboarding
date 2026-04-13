@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유진영세무회계 · 거래처 온보딩 서류 v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:'Noto Sans KR', sans-serif; background:#eef1f5; color:#111; }
+  .toolbar { position:sticky; top:0; background:#1f2937; color:#fff; padding:14px 24px; z-index:50; box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .toolbar h1 { margin:0; font-size:15px; color:#fff; font-weight:600; }
+  .toolbar button { background:#3b82f6; color:#fff; border:0; padding:9px 16px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:500; }
+  .toolbar button:hover { background:#2563eb; }
+  .toolbar button.secondary { background:#6b7280; }
+  .toolbar button.secondary:hover { background:#4b5563; }
+  .toolbar .note { margin-left:auto; font-size:11.5px; opacity:.85; }
+  .info-banner { max-width:210mm; margin:18px auto 0; background:#fef3c7; border:1px solid #fbbf24; padding:12px 18px; border-radius:6px; font-size:12.5px; line-height:1.6; color:#78350f; }
+  .info-banner b { color:#92400e; }
+  .doc-page {
+    width:210mm; min-height:297mm; background:#fff; margin:24px auto;
+    padding:20mm 18mm; box-shadow:0 3px 14px rgba(0,0,0,.12);
+    font-family:'Noto Serif KR', serif; font-size:10.5pt; line-height:1.55;
+    page-break-after:always; position:relative;
+  }
+  .doc-title { text-align:center; font-size:20pt; font-weight:700; margin:0 0 6px; letter-spacing:2px; }
+  .doc-subtitle { text-align:right; font-size:8.5pt; color:#555; margin:0 0 14px; }
+  .form-tbl { width:100%; border-collapse:collapse; margin:6px 0; }
+  .form-tbl td, .form-tbl th { border:1px solid #000; padding:5px 7px; vertical-align:middle; font-size:10pt; }
+  .form-tbl th { background:#f3f4f6; font-weight:500; text-align:center; }
+  .form-tbl .lbl { background:#f3f4f6; text-align:center; font-weight:500; width:18%; }
+  .form-tbl .lbl-sm { background:#f3f4f6; text-align:center; font-weight:500; width:13%; }
+  .form-tbl .lbl-md { background:#f3f4f6; text-align:center; font-weight:500; width:16%; }
+  .form-tbl td.v { min-height:26px; }
+  .notice { font-size:9pt; background:#fafafa; border:1px solid #ddd; padding:8px 12px; margin:10px 0; line-height:1.55; }
+  .notice b { font-weight:600; }
+  .chk { display:inline-block; width:12px; height:12px; border:1px solid #333; margin:0 3px 0 2px; text-align:center; line-height:10px; font-size:9pt; vertical-align:middle; font-weight:700; }
+  .chk.on { background:#111; color:#fff; }
+  .sig-block { display:flex; justify-content:flex-end; gap:40px; margin-top:24px; align-items:center; }
+  .sig-row { display:flex; align-items:center; gap:8px; margin:6px 0; }
+  .sig-name { font-size:11pt; min-width:90px; text-align:center; }
+  .stamp-wrap { position:relative; display:inline-block; width:60px; height:60px; vertical-align:middle; margin-left:4px; }
+  .stamp-wrap.big { width:80px; height:80px; }
+  .stamp-wrap svg, .stamp-wrap img { width:100%; height:100%; display:block; }
+  .article { margin:10px 0 4px; font-weight:700; font-size:10.5pt; }
+  .article-body { font-size:10pt; padding-left:14px; margin:4px 0 8px; line-height:1.65; }
+  .date-line { text-align:center; margin:16px 0 10px; font-size:11pt; }
+  .biz-header { text-align:center; margin:8px 0 16px; font-size:10.5pt; }
+  .section-h { background:#e5e7eb; border:1px solid #000; padding:5px 10px; font-weight:600; font-size:10.5pt; margin:10px 0 -1px; }
+  .tight td { padding:4px 6px; font-size:9.5pt; }
+  .small { font-size:9pt; color:#444; line-height:1.5; }
+  hr.soft { border:0; border-top:1px dashed #999; margin:10px 0; }
+  @media print {
+    body { background:#fff; }
+    .toolbar, .info-banner { display:none; }
+    .doc-page { margin:0; box-shadow:none; padding:15mm 13mm; }
+    .doc-page + .doc-page { page-break-before:always; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>유진영세무회계 · 거래처 온보딩 서류 (v2)</h1>
+  <button onclick="downloadAllWord()">전부 Word 다운로드</button>
+  <button class="secondary" onclick="window.print()">전체 인쇄</button>
+  <span class="note">각 서식은 개별 .doc 파일로 저장됩니다 · 공단별 제출용</span>
+</div>
+
+<div class="info-banner">
+  <b>v2 테스트 출력물</b> — 거래처 "테스트 주식회사" 가 폼을 작성했다고 가정. 5개 공단 서식 + 홈택스 세무대리정보 A형/B형 = 총 7장. 각 서식의 법정 문구는 올려주신 HWP 원본 .txt 를 1:1 반영했습니다.
+  <br><b>도장</b>: 거래처 도장은 상호명 기반으로 자동 생성, 세무사 도장은 SVG 플레이스홀더 (PNG 교체 대기).
+  <br><b>출력</b>: "전부 Word 다운로드" 버튼을 누르면 서식별로 <code>.doc</code> 파일 7개가 자동 저장됩니다.
+</div>
+
+<!-- ========================================================
+  FORM 1 — 기장대리계약서
+======================================================== -->
+<div class="doc-page" id="doc-1" data-title="1_기장대리계약서">
+  <h1 class="doc-title">기 장 대 리 계 약 서</h1>
+
+  <p style="margin:14px 0 8px;">「갑」이라 칭하는 <span data-bind="bizName">___</span> (이하 "갑"이라 한다)과 「을」이라 칭하는 <b>유진영세무회계</b> (이하 "을"이라 한다)는 상호 성실과 신의를 바탕으로 아래와 같이 기장 및 세무대리 업무에 관하여 계약을 체결한다.</p>
+
+  <div class="article">제1조 (계약의 목적)</div>
+  <div class="article-body">본 계약은 "갑"의 사업에 관한 회계장부 작성 및 세무신고 대리 업무를 "을"이 성실히 수행하고, "갑"이 이에 대한 수수료를 지급함에 있어 필요한 사항을 정함을 목적으로 한다.</div>
+
+  <div class="article">제2조 (업무의 범위)</div>
+  <div class="article-body">"을"은 "갑"을 위하여 다음 각 호의 업무를 수행한다.<br>
+  1. 매월 회계장부의 기장 및 정리<br>
+  2. 부가가치세 신고 및 신고서 작성 대리<br>
+  3. 원천세·사업소세·지방소득세 등 제반 세금 신고 대리<br>
+  4. 종합소득세(개인) 또는 법인세(법인) 신고 대리<br>
+  5. 4대 보험 가입·취득·상실 등 관련 업무의 보조<br>
+  6. 기타 "갑"이 요청하는 일반적인 세무 상담</div>
+
+  <div class="article">제3조 (계약 기간)</div>
+  <div class="article-body">본 계약의 기간은 계약 체결일로부터 1년으로 하며, 계약 만료 30일 전까지 "갑" 또는 "을"이 서면으로 해지 의사를 통보하지 아니하는 경우 동일한 조건으로 1년씩 자동 연장된다.</div>
+
+  <div class="article">제4조 (수수료)</div>
+  <div class="article-body">"갑"은 "을"에게 기장 및 세무대리 수수료로 <b>월 <span data-bind="fee">___</span>원(부가세 별도)</b>을 매월 <span data-bind="cmsDay">__</span>일에 지급하며, CMS 자동이체 방식으로 납입한다. 조정료·신고수수료 등 별도 업무에 대한 수수료는 실비 정산한다.</div>
+
+  <div class="article">제5조 (자료 제공)</div>
+  <div class="article-body">"갑"은 기장 및 세무신고 업무에 필요한 모든 증빙자료와 정보를 "을"에게 성실히 제공하여야 하며, 자료 미제공으로 인한 신고 오류·가산세 등의 책임은 "갑"이 부담한다.</div>
+
+  <div class="article">제6조 (비밀 유지)</div>
+  <div class="article-body">"을"은 본 계약의 수행 과정에서 알게 된 "갑"의 영업상 또는 개인적 비밀을 제3자에게 누설하지 않으며, 이는 계약 종료 후에도 유지된다.</div>
+
+  <div class="article">제7조 (계약의 해지)</div>
+  <div class="article-body">1. "갑" 또는 "을"은 상대방의 중대한 계약 위반이 있을 경우 서면 통지로 본 계약을 즉시 해지할 수 있다.<br>
+  2. 해지 시 "을"은 진행 중인 업무를 성실히 마무리하고, 관련 자료를 "갑"에게 반환한다.</div>
+
+  <div class="article">제8조 (기타)</div>
+  <div class="article-body">본 계약에 명시되지 않은 사항은 관련 법령 및 일반 상관례에 따르며, 분쟁 발생 시 "을"의 사업장 소재지 관할 법원을 합의 관할로 한다.</div>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <table class="form-tbl" style="margin-top:14px;">
+    <tr>
+      <td class="lbl" style="width:8%;">갑</td>
+      <td style="width:42%;">
+        상호: <b data-bind="bizName">___</b><br>
+        사업자등록번호: <span data-bind="bizNum">___</span><br>
+        주소: <span data-bind="address">___</span><br>
+        대표자: <span data-bind="repName">___</span>
+        <span class="stamp-wrap client-stamp" data-size="60"></span>
+      </td>
+      <td class="lbl" style="width:8%;">을</td>
+      <td style="width:42%;">
+        상호: <b>유진영세무회계</b><br>
+        사업자등록번호: 725-02-00312<br>
+        주소: 서울시 송파구 백제고분로 385, 401호<br>
+        대표자: 유 진 영
+        <span class="stamp-wrap yj-stamp" data-size="60"></span>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- ========================================================
+  FORM 2 — CMS 출금이체 동의서 (법정 문구 1:1)
+======================================================== -->
+<div class="doc-page" id="doc-2" data-title="2_CMS출금이체동의서">
+  <h1 class="doc-title">CMS 출금 이체 신청서</h1>
+  <div class="biz-header"><span data-bind="fee">_____</span> 원 &nbsp;&nbsp;&nbsp; 매월 <span data-bind="cmsDay">__</span>일</div>
+
+  <div class="section-h">1. 수납업체 및 요금정보</div>
+  <table class="form-tbl tight" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm">수 납 업 체</td>
+      <td>유진영세무회계</td>
+      <td class="lbl-sm">사업자(고유)번호</td>
+      <td>725-02-00312</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">대   표   자</td>
+      <td>유진영</td>
+      <td class="lbl-sm">수 납 목 적</td>
+      <td>기장료</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">사업장 주소</td>
+      <td colspan="3">서울시 송파구 백제고분로 385, 401호</td>
+    </tr>
+  </table>
+
+  <div class="section-h">2. 자동이체 신청 내용 (신청고객 기재란)</div>
+  <table class="form-tbl tight" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm">구   분</td>
+      <td class="lbl-sm">신   청   인</td>
+      <td colspan="2" data-bind="repName">___</td>
+    </tr>
+    <tr>
+      <td rowspan="2" class="lbl-sm" style="vertical-align:middle;"></td>
+      <td class="lbl-sm">신청인 연락처</td>
+      <td colspan="2" data-bind="phone">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">이 용 요 금</td>
+      <td><span data-bind="fee">___</span> 원</td>
+      <td class="lbl-sm">출   금   일</td>
+    </tr>
+    <tr>
+      <td colspan="4" style="text-align:right; font-size:9pt;">* 미납 시 재출금</td>
+    </tr>
+    <tr>
+      <td rowspan="6" class="lbl-sm" style="vertical-align:middle;">CMS<br>은행계좌<br>자동이체</td>
+      <td class="lbl-sm">은       행</td>
+      <td colspan="2" data-bind="bank">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">계 좌 번 호</td>
+      <td colspan="2" data-bind="account">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">예   금   주</td>
+      <td colspan="2" data-bind="accountName">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">예금주생년월일 /<br>사업자(고유)번호</td>
+      <td colspan="2"><span data-bind="repBirth">___</span> <span class="small">(사업자의 경우 사업자등록번호 기재)</span></td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">예금주와의 관계</td>
+      <td colspan="2">본인</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">예금주<br>휴대전화번호</td>
+      <td colspan="2" data-bind="phone">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">비   고</td>
+      <td colspan="3" style="min-height:26px;">[ 특약사항 및 비고사항 ]</td>
+    </tr>
+  </table>
+
+  <div class="notice"><b>[개인정보 수집 및 이용 동의]</b><br>
+  - 수집 및 이용목적 : CMS 출금이체서비스를 통한 요금 수납<br>
+  - 수집항목 (개인정보) : 성명, 예금주 생년월일, 전화번호, 휴대전화번호, 금융기관명, 계좌번호<br>
+  - 보유 및 이용기간 : 수집, 이용 동의일 부터 CMS 출금이체 종료일(해지일) 5년까지<br>
+  - 신청자는 개인정보 수집 및 이용을 거부할 권리가 있으며, 권리행사시 출금이체 신청이 거부될 수 있습니다.<br>
+  <div style="text-align:right; margin-top:4px;">동의함 <span class="chk on">✓</span> &nbsp; 동의안함 <span class="chk"></span></div>
+  </div>
+
+  <div class="notice"><b>[개인정보 제3자 제공 동의]</b><br>
+  - 개인정보를 제공받는 자 : <span class="chk on">✓</span> 프로씨엠에스 &nbsp; <span class="chk"></span> 사단법인 금융결제원 &nbsp; <span class="chk"></span> ㈜효성에프엠에스 &nbsp; <span class="chk on">✓</span> 나이스페이먼츠(주)<br>
+  - 개인정보를 제공받는 자의 개인정보 이용 목적 : CMS프로그램 제공, CMS출금이체 서비스 제공 및 출금동의 확인, 출금이체 신규등록 및 해지 사실 통지<br>
+  - 제공하는 개인정보의 항목 : 성명, 예금주 생년월일, 금융기관명, 계좌번호, 전화번호, 휴대전화번호<br>
+  - 개인정보를 제공받는 자의 개인정보 보유 및 이용기간 : CMS 출금이체 서비스 제공 및 출금동의 확인 목적을 달성할 때 까지<br>
+  - 신청자는 개인정보에 대해 수납기관이 <span class="chk on">✓</span> 프로씨엠에스 <span class="chk"></span> 사단법인 금융결제원 <span class="chk"></span> ㈜효성에프엠에스 <span class="chk on">✓</span> 나이스페이먼츠(주) 제공하는 것을 거부할 권리가 있으며, 거부 시 출금이체 신청이 거부 될 수 있습니다.<br>
+  <div style="text-align:right; margin-top:4px;">동의함 <span class="chk on">✓</span> &nbsp; 동의안함 <span class="chk"></span></div>
+  </div>
+
+  <div class="notice"><b>[출금이체 동의여부 사실 통지 안내]</b><br>
+  CMS 제도의 안정적 운영을 위하여 고객의 (은행 등 금융회사 및 이용기관보유) 연락처 정보를 활용하여 문자메시지로 고객의 출금이체 동의여부 사실을 통지할 수 있습니다.</div>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <div style="margin-top:10px;">
+    <div class="sig-row">
+      <div class="sig-name" style="text-align:right; min-width:80px;">신 청 인</div>
+      <div style="min-width:140px; border-bottom:1px solid #333; padding:2px 10px;" data-bind="repName">___</div>
+      <div>(인) 또는 서명</div>
+      <span class="stamp-wrap client-stamp" data-size="56"></span>
+    </div>
+    <div class="sig-row">
+      <div class="sig-name" style="text-align:right; min-width:80px;">예 금 주</div>
+      <div style="min-width:140px; border-bottom:1px solid #333; padding:2px 10px;" data-bind="accountName">___</div>
+      <div>(인) 또는 서명</div>
+      <span class="stamp-wrap client-stamp" data-size="56"></span>
+    </div>
+    <div class="small" style="margin-top:6px;">✜ 신청인과 예금주가 다른 경우, 반드시 예금주의 서명을 날인하여 주시기 바랍니다.</div>
+  </div>
+</div>
+
+<!-- ========================================================
+  FORM 3 — 건강보험 EDI 업무대행 위임장
+======================================================== -->
+<div class="doc-page" id="doc-3" data-title="3_건강보험EDI_위임장">
+  <div class="doc-subtitle">[별지 제6호서식]</div>
+  <h1 class="doc-title">건강보험 EDI 업무대행 위임장</h1>
+
+  <table class="form-tbl">
+    <tr>
+      <td rowspan="5" class="lbl-sm" style="width:11%;">업무<br>대행기관</td>
+      <td class="lbl">사업장관리번호</td>
+      <td>725-02-00312-0</td>
+    </tr>
+    <tr>
+      <td class="lbl">기 관 명</td>
+      <td>유진영세무회계</td>
+    </tr>
+    <tr>
+      <td class="lbl">소  재  지</td>
+      <td>서울시 송파구 백제고분로 385, 401호</td>
+    </tr>
+    <tr>
+      <td class="lbl">대  표  자</td>
+      <td>유진영</td>
+    </tr>
+    <tr>
+      <td class="lbl">주민번호</td>
+      <td>751020- 1******</td>
+    </tr>
+    <tr>
+      <td rowspan="6" class="lbl-sm">위임사업장</td>
+      <td class="lbl">사업장관리번호<br><span class="small">(단위사업장기호)</span></td>
+      <td><span data-bind="bizNum">___</span>-0</td>
+    </tr>
+    <tr>
+      <td class="lbl">사업장명</td>
+      <td data-bind="bizName">___</td>
+    </tr>
+    <tr>
+      <td class="lbl">소  재  지</td>
+      <td data-bind="address">___</td>
+    </tr>
+    <tr>
+      <td class="lbl">대  표  자</td>
+      <td data-bind="repName">___</td>
+    </tr>
+    <tr>
+      <td class="lbl">주민번호</td>
+      <td data-bind="repRRN">___</td>
+    </tr>
+    <tr>
+      <td class="lbl">사업자등록번호</td>
+      <td data-bind="bizNum">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">위임<br>업 무 범 위</td>
+      <td colspan="2">공단 웹 EDI 서비스 업무</td>
+    </tr>
+  </table>
+
+  <div class="notice"><b>작성방법</b><br>
+  - 주민번호 : 생년월일 + 성별까지 기재</div>
+
+  <p style="margin:12px 0; text-align:center;">민법 제114조(대리행위의 효력)의 규정에 의하여 위와 같이 건강보험 EDI 업무대행 대리인 위임을 신청합니다.</p>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <div style="text-align:right; margin:18px 40px 8px;">
+    위 임 자 &nbsp;&nbsp; <span style="display:inline-block; min-width:120px; border-bottom:1px solid #333; padding:2px 10px; text-align:center;" data-bind="repName">___</span> &nbsp; (서명 또는 인) <span class="stamp-wrap client-stamp" data-size="56"></span>
+  </div>
+
+  <p style="text-align:center; margin-top:16px; font-size:11pt; font-weight:500;">국민건강보험공단 ○○○○지사장 귀하</p>
+</div>
+
+<!-- ========================================================
+  FORM 4 — 보험사무대행기관 사무위탁서 (고용산재)
+======================================================== -->
+<div class="doc-page" id="doc-4" data-title="4_사무위탁서_고용산재">
+  <h1 class="doc-title">보험사무대행기관 사무위탁서</h1>
+
+  <table class="form-tbl tight">
+    <tr>
+      <td class="lbl-sm">사업장관리번호</td>
+      <td></td>
+      <td class="lbl-sm">사업장명</td>
+      <td data-bind="bizName">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">상시사용근로자수</td>
+      <td data-bind="empCount">___</td>
+      <td class="lbl-sm">소재지</td>
+      <td data-bind="address">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">전화번호</td>
+      <td data-bind="phone">___</td>
+      <td class="lbl-sm">대표자</td>
+      <td data-bind="repName">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">사업의 종류</td>
+      <td colspan="3" data-bind="bizClass">___</td>
+    </tr>
+  </table>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm" style="vertical-align:top; padding-top:10px;">위탁사항</td>
+      <td>
+        <div><span class="chk on">✓</span> <b>고용보험 및 산업재해보상보험(임금채권 및 석면피해구제 포함)관련 사무</b></div>
+        <div style="padding-left:16px; margin-top:4px; line-height:1.75;">
+          1. 보수총액 및 근로자 고용정보 신고에 관한 사무<br>
+          2. 보험료 신고에 관한 사무<br>
+          3. 보험관계 성립, 변경, 소멸 등의 신고에 관한 사무<br>
+          4. 기타 관계 법령 및 규정 등에 의하여 사업주가 근로복지공단이나 지방고용노동관서에 신고 또는 보고하여야 할 보험사무<br>
+          5. 피보험자격의 취득ㆍ상실 및 근로내역확인 신고 등 피보험자관리에 관한 사무(고용보험에 한함)
+        </div>
+        <div class="small" style="margin-top:6px;">※ 보험사무대행기관이 상기 위탁사항의 처리에 필요한 정보를 근로복지공단에서 제공받는 것에 동의 함</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">사무처리 시작<br>연월일<br>(예정)</td>
+      <td><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</td>
+    </tr>
+  </table>
+
+  <p style="margin:12px 0;">위와 같이 귀 보험사무대행기관에 <span class="chk on">✓</span> 고용보험 <span class="chk on">✓</span> 산업재해보상보험(임금채권 및 석면피해구제 포함) 사무의 처리를 위탁합니다.</p>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm">위탁사업주 주소</td>
+      <td data-bind="address">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">성명</td>
+      <td>
+        <span data-bind="repName">___</span> &nbsp; (서명 또는 인)
+        <span class="stamp-wrap client-stamp" data-size="56"></span>
+      </td>
+    </tr>
+  </table>
+
+  <p style="text-align:center; margin:18px 0; font-size:11pt; font-weight:500;">유진영세무회계 보험사무대행기관 대표 귀하</p>
+
+  <hr class="soft">
+
+  <p style="margin:10px 0;"><span class="chk on">✓</span> 고용보험 <span class="chk on">✓</span> 산업재해보상보험(임금채권 및 석면피해구제 포함) 관련 사무 수탁을 <span class="chk on">✓</span> 승낙 <span class="chk"></span> 불승낙 합니다.</p>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm">불승낙 사유</td>
+      <td style="min-height:30px;"></td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">보험가입자<br>사업장관리번호</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm">보험사무대행기관 명칭</td>
+      <td>유진영세무회계</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">소재지</td>
+      <td>서울시 송파구 백제고분로 385, 401호 (송파동)</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">대표자</td>
+      <td>
+        유 진 영 &nbsp; (서명 또는 인)
+        <span class="stamp-wrap yj-stamp" data-size="56"></span>
+      </td>
+    </tr>
+  </table>
+
+  <div class="small" style="text-align:right; margin-top:10px;">210mm×297mm[일반용지60g/㎡(재활용품)]</div>
+</div>
+
+<!-- ========================================================
+  FORM 5 — 국민연금 웹 EDI 업무대행 신청서
+======================================================== -->
+<div class="doc-page" id="doc-5" data-title="5_국민연금EDI_업무대행신청서">
+  <h1 class="doc-title">국민연금 웹 EDI 업무대행 신청서</h1>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm">접수번호</td>
+      <td></td>
+      <td class="lbl-sm">접수일</td>
+      <td></td>
+      <td class="lbl-sm">처리기간</td>
+      <td>즉시</td>
+    </tr>
+  </table>
+
+  <table class="form-tbl">
+    <tr>
+      <td rowspan="6" class="lbl-sm" style="width:11%;">업무<br>대행기관</td>
+      <td class="lbl">사업장관리번호</td>
+      <td colspan="3">725-02-00312-0</td>
+    </tr>
+    <tr>
+      <td class="lbl">사업장 명칭</td>
+      <td colspan="3">유진영세무회계</td>
+    </tr>
+    <tr>
+      <td class="lbl">소 재 지</td>
+      <td colspan="3">서울 송파구 백제고분로 385, 401 (송파동, 임진각빌딩)</td>
+    </tr>
+    <tr>
+      <td class="lbl">사업자등록번호</td>
+      <td>725-02-00312</td>
+      <td class="lbl">법인등록번호</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="lbl" rowspan="2">사용자</td>
+      <td class="lbl">성 명</td>
+      <td class="lbl">생년월일</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>유 진 영</td>
+      <td colspan="2">751020</td>
+    </tr>
+  </table>
+
+  <table class="form-tbl">
+    <tr>
+      <td rowspan="6" class="lbl-sm" style="width:11%;">위탁<br>사업장</td>
+      <td class="lbl">사업장관리번호</td>
+      <td colspan="3"><span data-bind="bizNum">___</span>-0</td>
+    </tr>
+    <tr>
+      <td class="lbl">사업장 명칭</td>
+      <td colspan="3" data-bind="bizName">___</td>
+    </tr>
+    <tr>
+      <td class="lbl">소 재 지</td>
+      <td colspan="3" data-bind="address">___</td>
+    </tr>
+    <tr>
+      <td class="lbl">사업자등록번호</td>
+      <td data-bind="bizNum">___</td>
+      <td class="lbl">법인등록번호</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="lbl" rowspan="2">사용자</td>
+      <td class="lbl">성 명</td>
+      <td class="lbl">생년월일</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td data-bind="repName">___</td>
+      <td colspan="2" data-bind="repBirth">___</td>
+    </tr>
+  </table>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm" style="vertical-align:top; padding-top:10px;">업무위탁<br>범위</td>
+      <td>
+        ▪ 자격의 취득 및 상실 신고 &nbsp;&nbsp;&nbsp;&nbsp; ▪ 내용변경 신고<br>
+        ▪ 기준소득월액 변경 등 신고 &nbsp;&nbsp; ▪ 신고서 처리결과 및 보험료결정내역 확인
+        <div class="small" style="margin-top:6px;">※ 증명서 발급에 관한 사항은 업무대행 범위에 포함되지 않음</div>
+      </td>
+    </tr>
+  </table>
+
+  <p class="small" style="margin:12px 0; line-height:1.7;">위탁사업장은 민법 제114조 규정에 따라 국민연금 웹 EDI 업무대행을 위탁하고, 업무대행기관은 대행기관으로서 제반 업무처리에 따른 법적 책임을 부담하며, 각 신청인은 개인정보의 부적정 사용을 방지하기 위한 조치를 취하고 불법 유출 등으로 발생하는 손해배상 등에 대하여 연대하여 책임질 것을 서약하며 업무대행을 신청합니다.</p>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <div style="margin:16px 20px;">
+    <div class="sig-row" style="margin:10px 0;">
+      <span style="min-width:250px;">신청인(업무대행기관 사용자)</span>
+      <span style="display:inline-block; min-width:120px; border-bottom:1px solid #333; padding:2px 10px; text-align:center;">유 진 영</span>
+      <span>(서명 또는 인)</span>
+      <span class="stamp-wrap yj-stamp" data-size="56"></span>
+    </div>
+    <div class="sig-row" style="margin:10px 0;">
+      <span style="min-width:250px;">(업무대행 위탁사업장 사용자) </span>
+      <span style="display:inline-block; min-width:120px; border-bottom:1px solid #333; padding:2px 10px; text-align:center;" data-bind="bizName">___</span>
+      <span>(서명 또는 인)</span>
+      <span class="stamp-wrap client-stamp" data-size="56"></span>
+    </div>
+  </div>
+
+  <p style="text-align:center; margin:12px 0; font-size:11pt; font-weight:500;">국민연금공단 지사장 귀하</p>
+
+  <div class="small" style="text-align:right; margin-top:14px;">수수료 없음 &nbsp;&nbsp; 210mm×297mm[일반용지60g/㎡(재활용품)]</div>
+</div>
+
+<!-- ========================================================
+  FORM 6 — 홈택스 세무대리정보 이용(해지)신청서 A형
+  (2번 신청구분: ⑥ 정보이용 신청)
+======================================================== -->
+<div class="doc-page" id="doc-6" data-title="6_홈택스세무대리정보이용신청서_A형_신규">
+  <div class="doc-subtitle">[별지 제6호 서식]</div>
+  <h1 class="doc-title" style="font-size:17pt;">홈택스 세무대리정보 이용(해지)신청서</h1>
+  <div style="text-align:center; margin-bottom:8px; color:#c00; font-weight:600;">A형 — 신규 정보이용 신청</div>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm">접수번호</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div class="section-h">1. 신청인 및 정보이용(해지) 사업장</div>
+  <table class="form-tbl tight" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm">① 성명(대표자명)</td>
+      <td data-bind="repName">___</td>
+      <td class="lbl-sm">② 주민등록번호<br>(외국인등록번호 등)</td>
+      <td data-bind="repRRN">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">③-1 상호(법인명)</td>
+      <td data-bind="bizName">___</td>
+      <td class="lbl-sm">④-1 사업자등록번호</td>
+      <td data-bind="bizNum">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">③-2</td>
+      <td></td>
+      <td class="lbl-sm">④-2</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">③-3</td>
+      <td></td>
+      <td class="lbl-sm">④-3</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">⑤ 연락처</td>
+      <td colspan="3">(전화번호 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) &nbsp;&nbsp; (휴대전화번호 : <span data-bind="phone">___</span>)</td>
+    </tr>
+  </table>
+
+  <div class="section-h">2. 신청 구분</div>
+  <table class="form-tbl" style="margin-top:0;">
+    <tr>
+      <td>⑥ 정보이용 신청 &nbsp; <span class="chk on">✓</span></td>
+    </tr>
+    <tr>
+      <td>⑦ 기존 정보이용 해지 후 새로운 정보이용 신청 &nbsp; <span class="chk"></span></td>
+    </tr>
+    <tr>
+      <td>⑧ 정보이용 해지신청 &nbsp; <span class="chk"></span></td>
+    </tr>
+  </table>
+
+  <div class="section-h">3. 세무대리정보 이용 구분 등 (정보이용 신청 시 작성)</div>
+  <table class="form-tbl" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm" style="vertical-align:top; padding-top:10px;">⑨ 세무대리정보이용<br>구분 및 기간</td>
+      <td>
+        ▶ 기장대리 : 동의 처리일로부터 해지일까지 &nbsp; <span class="chk on">✓</span><br>
+        ▶ 신고대리 : 동의 처리일로부터 당해 세무신고의 신고기한까지 &nbsp; <span class="chk"></span><br>
+        &nbsp;&nbsp;&nbsp; 외부조정(법인) : 동의 처리일로부터 당해 세무신고의 신고기한까지 &nbsp; <span class="chk"></span>
+      </td>
+    </tr>
+  </table>
+
+  <div class="small" style="margin:8px 0; line-height:1.6;">
+  ※ 세무대리정보 이용 범위:「홈택스 이용에 관한 규정」 제54조의 정보<br>
+  ※ 신청인의 개인정보보호를 위하여 세무대리인과 위임계약이 해지된 경우 반드시 신청인 또는 세무대리인이 홈택스에서 수임등록을 해지하시기 바랍니다.
+  </div>
+
+  <div class="section-h">4. 정보이용(해지) 세무대리인</div>
+  <table class="form-tbl tight" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm">⑩ 성명(상호)</td>
+      <td>유진영세무회계</td>
+      <td class="lbl-sm">⑪ 사업자등록번호</td>
+      <td>725-02-00312</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">⑫ 세무사관리번호</td>
+      <td>W-34588</td>
+      <td class="lbl-sm">⑬ 연락처</td>
+      <td>(전화번호 : 010-6566-2351)</td>
+    </tr>
+  </table>
+
+  <p style="margin:10px 0; font-size:10pt;">상기 세무대리인이 국세청 홈택스에서 제공되는 신청인의 세무관련 정보 이용(해지)에 대하여 동의합니다.</p>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <div style="text-align:right; margin:12px 20px;">
+    신 청 인 : &nbsp;<span style="display:inline-block; min-width:100px; border-bottom:1px solid #333; padding:2px 8px; text-align:center;" data-bind="repName">___</span> &nbsp; (서명 또는 인) <span class="stamp-wrap client-stamp" data-size="54"></span>
+  </div>
+  <p style="text-align:center; margin:10px 0;">세무서장 귀하</p>
+
+  <div class="section-h" style="margin-top:14px;">위 임 장 (대리인에게 위임하는 경우 작성)</div>
+  <p style="margin:8px 4px; font-size:10pt;">위 신청인 본인은 아래 위임받은 사람에게 홈택스 세무대리정보 이용(해지)신청에 관한 모든 권리와 의무를 위임합니다.</p>
+
+  <div style="margin:6px 4px; font-size:10pt;">
+    위임하는 사람(신청인) : <span style="display:inline-block; min-width:100px; border-bottom:1px solid #333; padding:2px 8px; text-align:center;" data-bind="repName">___</span> &nbsp; (서명 또는 인) <span class="stamp-wrap client-stamp" data-size="48"></span>
+  </div>
+
+  <table class="form-tbl tight" style="margin-top:6px;">
+    <tr>
+      <td rowspan="4" class="lbl-sm" style="width:12%;">위임받은<br>사람</td>
+      <td class="lbl">성 명</td>
+      <td>유진영</td>
+    </tr>
+    <tr>
+      <td class="lbl">주민등록번호</td>
+      <td>751020-1552722</td>
+    </tr>
+    <tr>
+      <td class="lbl">위임하는 사람과의 관계</td>
+      <td>세무대리인</td>
+    </tr>
+    <tr>
+      <td class="lbl">연락처</td>
+      <td>(전화번호 : 010-6566-2351)</td>
+    </tr>
+  </table>
+
+  <div class="notice"><b>개인정보 수집 ㆍ 이용에 대한 동의(개인정보보호법 제24조)</b><br>
+  ※ 동의를 거부할 권리가 있으며, 거부할 경우 신청서 처리 불가능 등의 불이익이 따를 수 있습니다.<br>
+  ○ 수집 ㆍ 이용목적 (신청서 처리, 사후관리 등) &nbsp;&nbsp; ○ 보유 ㆍ 이용기간 ( 5년 )<br>
+  ○ 수집대상 고유식별정보 (주민등록번호, 외국인등록번호, 여권번호 등)<br>
+  <span class="chk on">✓</span> 상기내용에 대해 동의합니다. &nbsp; <span class="chk"></span> 상기내용에 대해 동의하지 않습니다.<br>
+  신청인 : <span style="display:inline-block; min-width:90px; border-bottom:1px solid #333; padding:1px 6px;" data-bind="repName">___</span> (서명 또는 인) &nbsp; 위임받은 사람 : <span style="display:inline-block; min-width:90px; border-bottom:1px solid #333; padding:1px 6px;">유 진 영</span> (서명 또는 인)
+  </div>
+
+  <div class="small" style="text-align:right; margin-top:8px;">210mm×297mm[백상지 80g/㎡(재활용품)]</div>
+</div>
+
+<!-- ========================================================
+  FORM 7 — 홈택스 세무대리정보 이용(해지)신청서 B형
+  (2번 신청구분: ⑦ 기존 정보이용 해지 후 새로운 정보이용 신청)
+======================================================== -->
+<div class="doc-page" id="doc-7" data-title="7_홈택스세무대리정보이용신청서_B형_해지후신청">
+  <div class="doc-subtitle">[별지 제6호 서식]</div>
+  <h1 class="doc-title" style="font-size:17pt;">홈택스 세무대리정보 이용(해지)신청서</h1>
+  <div style="text-align:center; margin-bottom:8px; color:#c00; font-weight:600;">B형 — 기존 정보이용 해지 후 새로운 정보이용 신청</div>
+
+  <table class="form-tbl">
+    <tr>
+      <td class="lbl-sm">접수번호</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div class="section-h">1. 신청인 및 정보이용(해지) 사업장</div>
+  <table class="form-tbl tight" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm">① 성명(대표자명)</td>
+      <td data-bind="repName">___</td>
+      <td class="lbl-sm">② 주민등록번호<br>(외국인등록번호 등)</td>
+      <td data-bind="repRRN">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">③-1 상호(법인명)</td>
+      <td data-bind="bizName">___</td>
+      <td class="lbl-sm">④-1 사업자등록번호</td>
+      <td data-bind="bizNum">___</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">③-2</td>
+      <td></td>
+      <td class="lbl-sm">④-2</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">③-3</td>
+      <td></td>
+      <td class="lbl-sm">④-3</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">⑤ 연락처</td>
+      <td colspan="3">(전화번호 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) &nbsp;&nbsp; (휴대전화번호 : <span data-bind="phone">___</span>)</td>
+    </tr>
+  </table>
+
+  <div class="section-h">2. 신청 구분</div>
+  <table class="form-tbl" style="margin-top:0;">
+    <tr>
+      <td>⑥ 정보이용 신청 &nbsp; <span class="chk"></span></td>
+    </tr>
+    <tr>
+      <td>⑦ 기존 정보이용 해지 후 새로운 정보이용 신청 &nbsp; <span class="chk on">✓</span></td>
+    </tr>
+    <tr>
+      <td>⑧ 정보이용 해지신청 &nbsp; <span class="chk"></span></td>
+    </tr>
+  </table>
+
+  <div class="section-h">3. 세무대리정보 이용 구분 등 (정보이용 신청 시 작성)</div>
+  <table class="form-tbl" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm" style="vertical-align:top; padding-top:10px;">⑨ 세무대리정보이용<br>구분 및 기간</td>
+      <td>
+        ▶ 기장대리 : 동의 처리일로부터 해지일까지 &nbsp; <span class="chk on">✓</span><br>
+        ▶ 신고대리 : 동의 처리일로부터 당해 세무신고의 신고기한까지 &nbsp; <span class="chk"></span><br>
+        &nbsp;&nbsp;&nbsp; 외부조정(법인) : 동의 처리일로부터 당해 세무신고의 신고기한까지 &nbsp; <span class="chk"></span>
+      </td>
+    </tr>
+  </table>
+
+  <div class="small" style="margin:8px 0; line-height:1.6;">
+  ※ 세무대리정보 이용 범위:「홈택스 이용에 관한 규정」 제54조의 정보<br>
+  ※ 신청인의 개인정보보호를 위하여 세무대리인과 위임계약이 해지된 경우 반드시 신청인 또는 세무대리인이 홈택스에서 수임등록을 해지하시기 바랍니다.
+  </div>
+
+  <div class="section-h">4. 정보이용(해지) 세무대리인</div>
+  <table class="form-tbl tight" style="margin-top:0;">
+    <tr>
+      <td class="lbl-sm">⑩ 성명(상호)</td>
+      <td>유진영세무회계</td>
+      <td class="lbl-sm">⑪ 사업자등록번호</td>
+      <td>725-02-00312</td>
+    </tr>
+    <tr>
+      <td class="lbl-sm">⑫ 세무사관리번호</td>
+      <td>W-34588</td>
+      <td class="lbl-sm">⑬ 연락처</td>
+      <td>(전화번호 : 010-6566-2351)</td>
+    </tr>
+  </table>
+
+  <p style="margin:10px 0; font-size:10pt;">상기 세무대리인이 국세청 홈택스에서 제공되는 신청인의 세무관련 정보 이용(해지)에 대하여 동의합니다.</p>
+
+  <div class="date-line"><span data-bind="dateYear">____</span> 년 <span data-bind="dateMonth">__</span> 월 <span data-bind="dateDay">__</span> 일</div>
+
+  <div style="text-align:right; margin:12px 20px;">
+    신 청 인 : &nbsp;<span style="display:inline-block; min-width:100px; border-bottom:1px solid #333; padding:2px 8px; text-align:center;" data-bind="repName">___</span> &nbsp; (서명 또는 인) <span class="stamp-wrap client-stamp" data-size="54"></span>
+  </div>
+  <p style="text-align:center; margin:10px 0;">세무서장 귀하</p>
+
+  <div class="section-h" style="margin-top:14px;">위 임 장 (대리인에게 위임하는 경우 작성)</div>
+  <p style="margin:8px 4px; font-size:10pt;">위 신청인 본인은 아래 위임받은 사람에게 홈택스 세무대리정보 이용(해지)신청에 관한 모든 권리와 의무를 위임합니다.</p>
+
+  <div style="margin:6px 4px; font-size:10pt;">
+    위임하는 사람(신청인) : <span style="display:inline-block; min-width:100px; border-bottom:1px solid #333; padding:2px 8px; text-align:center;" data-bind="repName">___</span> &nbsp; (서명 또는 인) <span class="stamp-wrap client-stamp" data-size="48"></span>
+  </div>
+
+  <table class="form-tbl tight" style="margin-top:6px;">
+    <tr>
+      <td rowspan="4" class="lbl-sm" style="width:12%;">위임받은<br>사람</td>
+      <td class="lbl">성 명</td>
+      <td>유진영</td>
+    </tr>
+    <tr>
+      <td class="lbl">주민등록번호</td>
+      <td>751020-1552722</td>
+    </tr>
+    <tr>
+      <td class="lbl">위임하는 사람과의 관계</td>
+      <td>세무대리인</td>
+    </tr>
+    <tr>
+      <td class="lbl">연락처</td>
+      <td>(전화번호 : 010-6566-2351)</td>
+    </tr>
+  </table>
+
+  <div class="notice"><b>개인정보 수집 ㆍ 이용에 대한 동의(개인정보보호법 제24조)</b><br>
+  ※ 동의를 거부할 권리가 있으며, 거부할 경우 신청서 처리 불가능 등의 불이익이 따를 수 있습니다.<br>
+  ○ 수집 ㆍ 이용목적 (신청서 처리, 사후관리 등) &nbsp;&nbsp; ○ 보유 ㆍ 이용기간 ( 5년 )<br>
+  ○ 수집대상 고유식별정보 (주민등록번호, 외국인등록번호, 여권번호 등)<br>
+  <span class="chk on">✓</span> 상기내용에 대해 동의합니다. &nbsp; <span class="chk"></span> 상기내용에 대해 동의하지 않습니다.<br>
+  신청인 : <span style="display:inline-block; min-width:90px; border-bottom:1px solid #333; padding:1px 6px;" data-bind="repName">___</span> (서명 또는 인) &nbsp; 위임받은 사람 : <span style="display:inline-block; min-width:90px; border-bottom:1px solid #333; padding:1px 6px;">유 진 영</span> (서명 또는 인)
+  </div>
+
+  <div class="small" style="text-align:right; margin-top:8px;">210mm×297mm[백상지 80g/㎡(재활용품)]</div>
+</div>
+
+<!-- ========================================================
+  DATA + SCRIPT
+======================================================== -->
+<script>
+// 테스트 데이터 — 실제 폼이 연결되면 여기를 폼 입력값으로 대체
+const d = {
+  bizName: '테스트 주식회사',
+  repName: '홍길동',
+  bizNum: '123-45-67890',
+  repBirth: '19751020',
+  repRRN: '751020-1******',
+  phone: '010-1234-5678',
+  email: 'test@testcorp.co.kr',
+  address: '서울특별시 송파구 백제고분로 28길 8-19',
+  bizType: 'corp',
+  fee: '150000',
+  cmsDay: '25',
+  bank: '신한은행',
+  account: '110-459-724236',
+  accountName: '홍길동',
+  hasEmp: true,
+  empCount: '5',
+  bizClass: '도매및소매업',
+  dateYear: '2026',
+  dateMonth: '4',
+  dateDay: '12'
+};
+
+const yj = {
+  bizName: '유진영세무회계',
+  bizNum: '725-02-00312',
+  address: '서울시 송파구 백제고분로 385, 401호',
+  repName: '유진영',
+  repBirth: '751020',
+  repRRN: '751020-1552722',
+  tmsNo: 'W-34588',
+  phone: '010-6566-2351'
+};
+
+// 거래처 도장 SVG 자동 생성
+function clientStampSVG(size) {
+  size = size || 60;
+  const R = '#B91C1C';
+  const name = (d.bizName || '').replace(/주식회사|㈜|\(주\)|\(유\)|유한회사/g, '').trim();
+  const chars = name.split('').slice(0, 4);
+  let inner = '';
+  if (chars.length <= 2) {
+    chars.forEach((c, i) => {
+      inner += `<text x="40" y="${32 + i*22}" fill="${R}" font-family="Noto Serif KR,serif" font-weight="700" font-size="22" text-anchor="middle">${c}</text>`;
+    });
+  } else {
+    const positions = [[27,35],[53,35],[27,58],[53,58]];
+    chars.forEach((c, i) => {
+      if (i < 4) inner += `<text x="${positions[i][0]}" y="${positions[i][1]}" fill="${R}" font-family="Noto Serif KR,serif" font-weight="700" font-size="17" text-anchor="middle">${c}</text>`;
+    });
+  }
+  return `<svg width="${size}" height="${size}" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="37" fill="none" stroke="${R}" stroke-width="2.6"/><circle cx="40" cy="40" r="31" fill="none" stroke="${R}" stroke-width="0.8"/>${inner}</svg>`;
+}
+
+// 세무사 도장 — PNG 업로드되면 <img> 로 교체될 자리. 현재는 SVG 플레이스홀더.
+function yjStampHTML(size) {
+  size = size || 60;
+  const R = '#B91C1C';
+  // When real stamp is ready, return: `<img src="yj-stamp.png" width="${size}" height="${size}">`
+  return `<svg width="${size}" height="${size}" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="37" fill="none" stroke="${R}" stroke-width="2.6"/><circle cx="40" cy="40" r="31" fill="none" stroke="${R}" stroke-width="0.8"/><text x="40" y="28" fill="${R}" font-family="Noto Serif KR,serif" font-weight="700" font-size="17" text-anchor="middle">유</text><text x="40" y="48" fill="${R}" font-family="Noto Serif KR,serif" font-weight="700" font-size="17" text-anchor="middle">진</text><text x="40" y="68" fill="${R}" font-family="Noto Serif KR,serif" font-weight="700" font-size="17" text-anchor="middle">영</text></svg>`;
+}
+
+function fillData() {
+  // 도장 주입
+  document.querySelectorAll('.client-stamp').forEach(el => {
+    el.innerHTML = clientStampSVG(parseInt(el.dataset.size) || 60);
+  });
+  document.querySelectorAll('.yj-stamp').forEach(el => {
+    el.innerHTML = yjStampHTML(parseInt(el.dataset.size) || 60);
+  });
+  // data-bind 주입
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const key = el.dataset.bind;
+    if (key === 'fee') {
+      el.textContent = parseInt(d.fee || 0).toLocaleString();
+    } else if (key in d) {
+      el.textContent = d[key];
+    } else if (key in yj) {
+      el.textContent = yj[key];
+    }
+  });
+}
+
+// Word 다운로드 — 서식별 개별 .doc 파일
+function downloadAllWord() {
+  const pages = document.querySelectorAll('.doc-page');
+  const cssEl = document.querySelector('style');
+  const css = cssEl ? cssEl.innerHTML : '';
+  pages.forEach((page, idx) => {
+    const title = page.dataset.title || `서식_${idx+1}`;
+    const fname = `${title}_${d.bizName}.doc`;
+    const html =
+`<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset='utf-8'>
+<title>${title}</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>${css}</style>
+</head>
+<body>${page.outerHTML}</body>
+</html>`;
+    const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fname;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', fillData);
+</script>
+</body>
+</html>
