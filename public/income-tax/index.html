@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>종합소득세 신고 안내 | 유진영세무회계</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F0F4F8;--card:#fff;--navy:#1B3A5C;--navy-light:#2A5580;--gold:#C5983E;--accent:#1565C0;--text:#333;--muted:#777;--border:#E0E0E0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text)}
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;text-align:center;padding:48px 20px 40px}
+.hero .office{font-size:11px;color:var(--gold);letter-spacing:3px;margin-bottom:8px}
+.hero h1{font-size:26px;font-weight:900;margin-bottom:6px}
+.hero .sub{font-size:14px;color:#a8c8e8;font-weight:300}
+.container{max-width:640px;margin:0 auto;padding:28px 16px 40px}
+.info-box{background:var(--card);border-radius:14px;padding:28px 24px;box-shadow:0 2px 16px rgba(0,0,0,.05);margin-bottom:16px}
+.info-box h2{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.info-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border:none}
+.info-row .label{font-size:13px;color:var(--muted);flex-shrink:0}
+.info-row .value{font-size:14px;font-weight:700;color:var(--navy);text-align:right}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:14px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.7}
+.checklist li:last-child{border:none}
+.checklist .title{font-weight:700;color:var(--accent)}
+.checklist .desc{font-size:12px;color:var(--muted);margin-top:2px}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.type-card{background:var(--bg);border-radius:10px;padding:16px;text-align:center}
+.type-card .t-label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.type-card .t-value{font-size:13px;font-weight:700;color:var(--navy)}
+.tip-box{background:#FFF8E1;border:1px solid #FFE082;border-radius:12px;padding:20px;margin-bottom:16px}
+.tip-box h3{font-size:14px;font-weight:700;color:#E65100;margin-bottom:10px}
+.tip-box ul{list-style:none;padding:0}
+.tip-box li{font-size:13px;line-height:1.8;color:#5D4037;padding-left:18px;position:relative}
+.tip-box li::before{content:'\2714';position:absolute;left:0;color:var(--accent);font-size:12px}
+.footer{background:var(--navy);color:#a8c8e8;text-align:center;padding:28px 20px;font-size:11px;line-height:2}
+.footer .name{color:#fff;font-weight:700;font-size:14px;margin-bottom:4px}
+.footer a{color:var(--gold);text-decoration:none}
+@media(max-width:480px){.hero h1{font-size:22px}.hero{padding:36px 16px 32px}.info-box{padding:22px 18px}.type-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="office">유진영세무회계</div>
+  <h1>종합소득세 신고 안내</h1>
+  <div class="sub" id="heroPeriod"></div>
+</div>
+<div class="container">
+
+  <div class="info-box">
+    <h2>&#128197; 신고 일정</h2>
+    <div class="info-row"><span class="label">귀속 연도</span><span class="value" id="taxPeriod"></span></div>
+    <div class="info-row"><span class="label">신고·납부 기한</span><span class="value" id="deadline"></span></div>
+    <div class="info-row"><span class="label">자료 제출 기한</span><span class="value" id="submitDate"></span></div>
+  </div>
+
+  <div class="info-box">
+    <h2>&#128100; 신고 대상</h2>
+    <div class="type-grid">
+      <div class="type-card"><div class="t-label">사업소득</div><div class="t-value">프리랜서·자영업자</div></div>
+      <div class="type-card"><div class="t-label">부동산임대</div><div class="t-value">임대소득자</div></div>
+      <div class="type-card"><div class="t-label">금융소득</div><div class="t-value">2천만원 초과</div></div>
+      <div class="type-card"><div class="t-label">기타소득</div><div class="t-value">강연료·원고료 등</div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h2>&#128203; 요청 자료</h2>
+    <ul class="checklist">
+      <li><span class="title">매출·매입 증빙</span><div class="desc">세금계산서, 카드매출, 현금영수증 내역</div></li>
+      <li><span class="title">사업용 통장 내역</span><div class="desc">연간 거래내역서 (모든 사업용 계좌)</div></li>
+      <li><span class="title">경비 증빙</span><div class="desc">임차료, 인건비, 차량유지비, 통신비 등 지출 증빙</div></li>
+      <li><span class="title">소득공제 서류</span><div class="desc">보험료, 의료비, 교육비, 기부금 납입증명서</div></li>
+      <li><span class="title">기타</span><div class="desc">전년도 신고서 사본, 타 소득 원천징수영수증</div></li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <h3>&#128161; 절세 Tip</h3>
+    <ul>
+      <li>노란우산공제 가입 시 소득공제 혜택 (최대 500만원)</li>
+      <li>사업용 신용카드를 국세청에 등록하세요</li>
+      <li>간편장부 대상자도 복식부기 시 기장세액공제 20%</li>
+      <li>성실신고확인 대상자는 6월 30일까지 신고 가능</li>
+    </ul>
+  </div>
+
+</div>
+<div class="footer">
+  <div class="name">유진영세무회계</div>
+  Tel. <a href="tel:010-6566-2351">010-6566-2351</a> | Fax. 02-6280-2351<br>
+  <a href="mailto:tax33458@naver.com">tax33458@naver.com</a>
+</div>
+<script>
+(function(){
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = now.getMonth() + 1;
+  // 종소세는 5월 신고, 1~5월이면 전년도 귀속, 6~12월이면 당해연도(다음 5월 안내)
+  var taxYear = month <= 5 ? year - 1 : year;
+  var deadlineYear = taxYear + 1;
+  document.getElementById('heroPeriod').textContent = taxYear + '년 귀속 종합소득세';
+  document.getElementById('taxPeriod').textContent = taxYear + '년 (1.1 ~ 12.31)';
+  document.getElementById('deadline').textContent = deadlineYear + '년 5월 31일';
+  document.getElementById('submitDate').textContent = deadlineYear + '년 5월 15일까지';
+})();
+</script>
+</body>
+</html>
